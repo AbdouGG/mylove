@@ -1,547 +1,975 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Fouzia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Are My Galaxy 💫 — For Fouzia</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Montserrat:wght@300;400;600&family=Great+Vibes&display=swap"
+        rel="stylesheet">
     <style>
-        body {
+        /* ============================================
+           GLOBAL STYLES & THEME
+           ============================================ */
+        :root {
+            --accent-gold: #ffd700;
+            --accent-rose: #ff6b9d;
+            --accent-purple: #a855f7;
+            --accent-pink: #ec4899;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glow-soft: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 40px rgba(255, 107, 157, 0.2);
+        }
+
+        *,
+        *::before,
+        *::after {
             margin: 0;
-            overflow: hidden;
-            background: linear-gradient(to bottom, #1a0b2e, #4a1a4a, #1a0b2e); /* Romantic Twilight Gradient */
-            font-family: 'Poppins', sans-serif;
-            touch-action: none; /* Critical for mobile game feel */
-            user-select: none; /* Prevents highlighting text on touch */
-            -webkit-user-select: none;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        canvas {
-            display: block;
-        }
-
-        /* UI Overlay */
-        #ui-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
+        body,
+        html {
             width: 100%;
             height: 100%;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            user-select: none;
+            /* Deep space gradient */
+            background: radial-gradient(ellipse at 20% 80%, #1a0533 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, #0c1445 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, #0d0d2b 0%, #050510 100%);
+        }
+
+        /* ============================================
+           CANVAS STARFIELD
+           ============================================ */
+        #starfield {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
             pointer-events: none;
+        }
+
+        /* ============================================
+           FLOATING HEARTS PARTICLES (CSS)
+           ============================================ */
+        .heart-particle {
+            position: fixed;
+            color: var(--accent-rose);
+            font-size: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+            animation: heart-rise linear infinite;
+        }
+
+        @keyframes heart-rise {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+            }
+
+            10% {
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-10vh) scale(1.2) rotate(20deg);
+            }
+        }
+
+        /* ============================================
+           MAIN APP CONTAINER
+           ============================================ */
+        #app {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+        }
+
+        /* ============================================
+           TITLE TYPOGRAPHY
+           ============================================ */
+        h1.title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: clamp(1.6rem, 5vw, 2.8rem);
             text-align: center;
-            z-index: 10;
-        }
-
-        /* Start Screen */
-        #start-screen {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 5vw; /* Responsive padding */
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 30px rgba(255, 0, 85, 0.3);
-            pointer-events: auto;
-            transition: opacity 0.5s;
-            max-width: 90%; /* Prevent overflow on mobile */
-        }
-
-        h1 {
-            font-family: 'Great Vibes', cursive;
-            background: -webkit-linear-gradient(#ff66b2, #ff0055);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffd700, #ff6b9d, #a855f7, #ffd700);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 15vw; /* Responsive font size for mobile */
-            margin: 0;
-            filter: drop-shadow(0 0 10px rgba(255, 0, 85, 0.5));
-        }
-        
-        /* Desktop override for title */
-        @media (min-width: 768px) {
-            h1 { font-size: 5rem; }
-            #start-screen { padding: 50px; }
-        }
-
-        p {
-            color: #ffcfe0;
-            font-size: 1.2rem;
-            margin: 10px 0 30px 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        button {
-            background: linear-gradient(45deg, #ff0055, #ff66b2);
-            color: white;
-            border: none;
-            padding: 15px 50px;
-            font-size: 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'Great Vibes', cursive;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 5px 15px rgba(255, 0, 85, 0.4);
-            outline: none;
-            -webkit-tap-highlight-color: transparent; /* Removes mobile tap box */
-        }
-
-        h1 {
-            font-family: 'Great Vibes', cursive;
-            background: -webkit-linear-gradient(#ff66b2, #ff0055);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 5rem;
-            margin: 0;
-            filter: drop-shadow(0 0 10px rgba(255, 0, 85, 0.5));
-        }
-
-        p {
-            color: #ffcfe0;
-            font-size: 1.3rem;
-            margin: 10px 0 30px 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        button {
-            background: linear-gradient(45deg, #ff0055, #ff66b2);
-            color: white;
-            border: none;
-            padding: 15px 50px;
-            font-size: 1.8rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'Great Vibes', cursive;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 5px 15px rgba(255, 0, 85, 0.4);
-            outline: none;
-        }
-
-        button:hover {
-            transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 0, 85, 0.6);
-        }
-
-        button:active {
-            transform: scale(0.95);
-        }
-
-        /* HUD */
-        #hud {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            font-size: 1.4rem;
-            font-weight: 600;
-            display: none;
+            background-clip: text;
+            animation: float 6s ease-in-out infinite, gradient-shift 8s ease infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+            z-index: 20;
             pointer-events: none;
-            text-shadow: 0 0 10px #ff0055;
+            transition: opacity 1.5s ease;
+            padding: 0 1.5rem;
+            line-height: 1.4;
         }
 
-        /* Love Meter Bar */
-        #meter-container {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            width: 250px;
-            height: 25px;
+        .subtitle {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: rgba(255, 107, 157, 0.8);
+            text-shadow: 0 0 15px rgba(255, 107, 157, 0.4);
+            animation: float 6s ease-in-out infinite reverse;
+            pointer-events: none;
+            transition: opacity 1.5s ease;
+        }
+
+        /* ============================================
+           STAR COUNTER
+           ============================================ */
+        #star-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: rgba(255, 215, 0, 0.8);
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            border: 2px solid rgba(255, 100, 150, 0.5);
-            display: none;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            z-index: 50;
+            transition: all 0.5s ease;
         }
 
-        #meter-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #ff0055, #ff66b2, #fff);
-            background-size: 200% 100%;
-            animation: shimmer 2s linear infinite;
-            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        #star-counter.complete {
+            color: var(--accent-rose);
+            border-color: rgba(255, 107, 157, 0.4);
+            box-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
         }
 
-        @keyframes shimmer {
-            0% { background-position: 100% 0; }
-            100% { background-position: -100% 0; }
-        }
-
-        #meter-label {
+        /* ============================================
+           INTERACTIVE STARS — Real star shapes!
+           ============================================ */
+        .star-container {
             position: absolute;
-            top: 55px;
-            right: 25px;
-            color: #ffb3d9;
-            font-size: 1rem;
-            display: none;
-            font-weight: 300;
-            letter-spacing: 1px;
+            inset: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease;
         }
 
-        /* Final Message */
-        #final-message {
+        .interactive-star {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            pointer-events: auto;
+            animation: pulse-star 3s infinite ease-in-out;
+            transition: transform 0.3s ease, filter 0.5s ease;
+            filter: drop-shadow(0 0 8px var(--accent-gold));
+        }
+
+        /* The actual star shape using CSS clip-path */
+        .interactive-star .star-shape {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffd700, #ffec80, #fff, #ffd700);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            position: relative;
+        }
+
+        /* Inner sparkle on each star */
+        .interactive-star .star-shape::after {
+            content: '';
+            position: absolute;
+            inset: 15%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, transparent 70%);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .interactive-star:hover {
+            transform: scale(1.3) rotate(15deg);
+            filter: drop-shadow(0 0 20px var(--accent-gold)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.5));
+        }
+
+        .interactive-star.collected .star-shape {
+            background: linear-gradient(135deg, #666, #888, #aaa, #666);
+        }
+
+        .interactive-star.collected {
+            animation: none;
+            opacity: 0.35;
+            filter: drop-shadow(0 0 3px rgba(150, 150, 150, 0.3));
+            cursor: default;
+            transform: scale(0.85);
+        }
+
+        /* Sparkle burst on click */
+        .interactive-star .sparkle-ring {
+            position: absolute;
+            inset: -20px;
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .interactive-star.just-clicked .sparkle-ring {
+            animation: sparkle-burst 0.6s ease-out forwards;
+        }
+
+        @keyframes sparkle-burst {
+            0% {
+                transform: scale(0.5);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        /* Star positions (scattered nicely) */
+        .star-1 {
+            top: 18%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .star-2 {
+            top: 22%;
+            right: 18%;
+            animation-delay: 0.6s;
+        }
+
+        .star-3 {
+            bottom: 28%;
+            left: 22%;
+            animation-delay: 1.2s;
+        }
+
+        .star-4 {
+            bottom: 22%;
+            right: 20%;
+            animation-delay: 1.8s;
+        }
+
+        .star-5 {
+            top: 55%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: 0.3s;
+        }
+
+        /* ============================================
+           THE MOON (Finale)
+           ============================================ */
+        #moon-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 2s ease-in;
-            z-index: 20;
-            width: 100%;
+            transition: opacity 2.5s ease-in-out;
+            z-index: 30;
         }
 
-        #final-message h1 {
-            font-size: 15vw; /* Responsive font size */
-            line-height: 1;
-            margin-bottom: 20px;
-            color: white;
-            text-shadow: 0 0 30px #ff0055;
+        #moon {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            cursor: pointer;
+            animation: moon-float 8s ease-in-out infinite;
+            position: relative;
+            /* Moon with craters look */
+            background: radial-gradient(circle at 35% 35%, #fffde7 0%, #f5f0d0 15%, #ddd5b5 40%, #c4bc9a 65%, #b0a888 100%);
+            box-shadow:
+                0 0 60px rgba(255, 253, 230, 0.5),
+                0 0 120px rgba(255, 253, 230, 0.2),
+                inset -25px -15px 40px rgba(0, 0, 0, 0.15);
         }
 
-        #final-message p {
-            font-size: 5vw;
+        /* Moon craters */
+        #moon::before {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.08), transparent);
+            border-radius: 50%;
+            top: 30%;
+            left: 55%;
+        }
+
+        #moon::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.06), transparent);
+            border-radius: 50%;
+            top: 55%;
+            left: 35%;
+        }
+
+        #moon:hover {
+            box-shadow:
+                0 0 80px rgba(255, 253, 230, 0.7),
+                0 0 160px rgba(255, 253, 230, 0.3),
+                inset -25px -15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        #moon-label {
+            margin-top: 30px;
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            background: linear-gradient(135deg, #ffd700, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.5));
+            opacity: 0;
+            transition: opacity 1.5s 0.8s ease;
+            text-align: center;
+        }
+
+        .moon-hint {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            animation: float 3s ease-in-out infinite;
+            opacity: 0;
+            transition: opacity 1.5s 1.5s ease;
+        }
+
+        /* ============================================
+           MODALS — Glassmorphism
+           ============================================ */
+        #modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        #modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 24px;
+            max-width: 85%;
+            width: 480px;
+            text-align: center;
+            box-shadow:
+                0 15px 50px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: scale(0.85) translateY(20px);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             color: #fff;
-            text-shadow: 0 0 20px #ff0055;
-        }
-        
-        /* Media query for desktop text sizing */
-        @media (min-width: 768px) {
-            #final-message h1 { font-size: 7rem; }
-            #final-message p { font-size: 2.5rem; }
+            position: relative;
+            overflow: hidden;
         }
 
+        /* Decorative gradient border glow on modal */
+        .modal::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), transparent 40%, rgba(255, 107, 157, 0.3));
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        #modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-star-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .modal p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .modal.final-modal p {
+            font-size: 1.25rem;
+            font-weight: 400;
+            line-height: 1.9;
+        }
+
+        .close-btn {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 157, 0.2));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #fff;
+            padding: 12px 32px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            outline: none;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .close-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 107, 157, 0.4));
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           KEYFRAME ANIMATIONS
+           ============================================ */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        @keyframes gradient-shift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes pulse-star {
+
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 8px var(--accent-gold));
+            }
+
+            50% {
+                transform: scale(1.15);
+                filter: drop-shadow(0 0 18px var(--accent-gold)) drop-shadow(0 0 35px rgba(255, 215, 0, 0.4));
+            }
+        }
+
+        @keyframes moon-float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
+        }
+
+        /* ============================================
+           UTILITY CLASSES
+           ============================================ */
+        .hidden {
+            display: none !important;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 600px) {
+            .interactive-star {
+                width: 45px;
+                height: 45px;
+            }
+
+            .modal {
+                width: 92%;
+                padding: 1.8rem;
+            }
+
+            #moon {
+                width: 120px;
+                height: 120px;
+            }
+
+            #star-counter {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+
+            .star-1 {
+                top: 14%;
+                left: 8%;
+            }
+
+            .star-2 {
+                top: 16%;
+                right: 8%;
+            }
+
+            .star-3 {
+                bottom: 22%;
+                left: 12%;
+            }
+
+            .star-4 {
+                bottom: 18%;
+                right: 10%;
+            }
+
+            .star-5 {
+                top: 58%;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-    <canvas id="gameCanvas"></canvas>
+    <!-- Background Starfield + Shooting Stars -->
+    <canvas id="starfield"></canvas>
 
-    <div id="ui-layer">
-        <div id="start-screen">
-            <h1>For Fouzia</h1>
-            <p>Collect the Love, Avoid the Heartbreak.</p>
-            <button onclick="startGame()">Play</button>
+    <!-- Star counter -->
+    <div id="star-counter">⭐ 0 / 5 Stars</div>
+
+    <!-- Main Application Container -->
+    <div id="app">
+
+        <!-- Intro State -->
+        <h1 id="main-title" class="title">Explore the stars to see why you shine ✨</h1>
+        <p id="subtitle" class="subtitle">— A sky full of stars, just for you, Fouzia —</p>
+
+        <div id="stars-container" class="star-container">
+            <!--
+                ★ 5 Interactive Stars ★
+                Each star has a data-id corresponding to the starMessages array index.
+                They are positioned via CSS classes (.star-1 to .star-5).
+                To add more stars: add a new div, new CSS class, and extend the array.
+            -->
+            <div class="interactive-star star-1" data-id="0">
+                <div class="star-shape"></div>
+                <div class="sparkle-ring"></div>
+            </div>
+            <div class="interactive-star star-2" data-id="1">
+                <div class="star-shape"></div>
+                <div class="sparkle-ring"></div>
+            </div>
+            <div class="interactive-star star-3" data-id="2">
+                <div class="star-shape"></div>
+                <div class="sparkle-ring"></div>
+            </div>
+            <div class="interactive-star star-4" data-id="3">
+                <div class="star-shape"></div>
+                <div class="sparkle-ring"></div>
+            </div>
+            <div class="interactive-star star-5" data-id="4">
+                <div class="star-shape"></div>
+                <div class="sparkle-ring"></div>
+            </div>
         </div>
 
-        <div id="hud">Score: <span id="scoreVal">0</span></div>
-        
-        <div id="meter-container">
-            <div id="meter-fill"></div>
+        <!-- Finale State (The Moon) -->
+        <div id="moon-container">
+            <div id="moon"></div>
+            <div id="moon-label">For you, my entire universe... Fouzia 💕</div>
+            <div class="moon-hint">tap the moon</div>
         </div>
-        <div id="meter-label">Love Meter</div>
 
-        <div id="final-message">
-            <h1>Fouzia</h1>
-            <p>My love for you is infinite.</p>
+    </div>
+
+    <!-- Modal Template -->
+    <div id="modal-overlay">
+        <div class="modal" id="modal-content">
+            <span class="modal-star-icon" id="modal-icon">⭐</span>
+            <div id="modal-body">
+                <p id="modal-text"></p>
+            </div>
+            <button class="close-btn" id="modal-close-btn">Close</button>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+        /* =================================================================
+         *  ★ CONFIGURATION — EDIT THESE TO PERSONALIZE ★
+         * ================================================================= */
 
-        let gameRunning = false;
-        let score = 0;
-        let loveMeter = 0; 
-        const maxLove = 100;
-        let particles = [];
-        let hearts = [];
-        let obstacles = [];
-        let trail = []; 
-        let winTriggered = false;
-        let gameScale = 1; // New variable to handle responsiveness
+        // --- Messages shown when each star is clicked (one per star) ---
+        const starMessages = [
+            "Your smile, Fouzia, lights up my darkest nights more than any star ever could. 🌟",
+            "Your laughter is my favorite melody — a sound the universe itself envies. 🎶",
+            "The way you care for others shows how beautiful your heart truly is. 💖",
+            "Every moment spent with you feels like a wish upon a shooting star come true. 🌠",
+            "You inspire me to be better, simply by being the amazing person you are. ✨"
+        ];
 
-        const heartEmojis = ['❤️', '💖', '💝', '💕', '💗', '💌'];
-        const obstacleEmoji = '💔'; 
+        // --- The final love letter shown when the moon is clicked ---
+        const finalLoveLetter = `
+            <strong style="font-family: 'Great Vibes', cursive; font-size: 1.8rem; 
+            background: linear-gradient(135deg, #ffd700, #ff6b9d); -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;">My Dearest Fouzia,</strong><br><br>
+            You've collected every star in my sky, but the truth is —
+            none of them could ever shine as brightly as you do.<br><br>
+            You are my moon, my stars, and my entire galaxy.
+            Thank you for being the light that guides my heart home.<br><br>
+            Every day with you is Valentine's Day.<br><br>
+            <em style="color: #ff6b9d;">Forever & always yours ❤️</em>
+        `;
 
-        // Player Object
-        const player = {
-            x: 0,
-            y: 0,
-            draw: function() {
-                // 1. Draw Trail
-                for(let i = 0; i < trail.length; i++) {
-                    const point = trail[i];
-                    const size = (i / trail.length) * (10 * gameScale); // Scale trail
-                    const alpha = (i / trail.length) * 0.5;
-                    ctx.fillStyle = `rgba(255, 100, 150, ${alpha})`;
-                    ctx.beginPath();
-                    ctx.arc(point.x, point.y, size, 0, Math.PI*2);
-                    ctx.fill();
+        /* =================================================================
+         *  GAME STATE
+         * ================================================================= */
+        const collectedStars = new Set();
+        const totalStars = 5;
+        let isMoonRevealed = false;
+
+        /* =================================================================
+         *  DOM ELEMENTS
+         * ================================================================= */
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalText = document.getElementById('modal-text');
+        const modalIcon = document.getElementById('modal-icon');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const starsContainer = document.getElementById('stars-container');
+        const mainTitle = document.getElementById('main-title');
+        const subtitle = document.getElementById('subtitle');
+        const moonContainer = document.getElementById('moon-container');
+        const moonElement = document.getElementById('moon');
+        const moonLabel = document.getElementById('moon-label');
+        const moonHint = document.querySelector('.moon-hint');
+        const interactiveStars = document.querySelectorAll('.interactive-star');
+        const starCounter = document.getElementById('star-counter');
+
+        /* =================================================================
+         *  MODAL SYSTEM
+         * ================================================================= */
+
+        function openModal(text, isFinal = false) {
+            modalText.innerHTML = text;
+            modalOverlay.classList.remove('hidden');
+            void modalOverlay.offsetWidth; // Force reflow
+            modalOverlay.classList.add('active');
+
+            const modal = document.querySelector('.modal');
+            if (isFinal) {
+                modal.classList.add('final-modal');
+                modalIcon.textContent = '🌙';
+            } else {
+                modal.classList.remove('final-modal');
+                modalIcon.textContent = '⭐';
+            }
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            setTimeout(() => {
+                modalOverlay.classList.add('hidden');
+                if (!isMoonRevealed) checkProgression();
+            }, 500);
+        }
+
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        /* =================================================================
+         *  STAR INTERACTION
+         * ================================================================= */
+
+        interactiveStars.forEach(star => {
+            star.addEventListener('click', function () {
+                const id = parseInt(this.getAttribute('data-id'));
+
+                if (!collectedStars.has(id)) {
+                    collectedStars.add(id);
+                    this.classList.add('collected');
+
+                    // Sparkle burst effect
+                    this.classList.add('just-clicked');
+                    setTimeout(() => this.classList.remove('just-clicked'), 600);
+
+                    // Update counter
+                    updateCounter();
                 }
 
-                // 2. Draw Main Glow
-                ctx.save();
-                ctx.shadowBlur = 30;
-                ctx.shadowColor = '#ff0055';
-                
-                // 3. Draw Player Emoji
-                // Scale font size based on screen width
-                ctx.font = `${60 * gameScale}px Arial`;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText("🤲", this.x, this.y);
-                ctx.restore();
-            },
-            update: function() {
-                trail.push({x: this.x, y: this.y});
-                if(trail.length > 20) trail.shift();
-            }
-        };
+                openModal(starMessages[id]);
+            });
+        });
 
-        function resize() {
+        function updateCounter() {
+            const count = collectedStars.size;
+            starCounter.textContent = `⭐ ${count} / ${totalStars} Stars`;
+            if (count === totalStars) {
+                starCounter.classList.add('complete');
+                starCounter.textContent = `✨ All Stars Collected! ✨`;
+            }
+        }
+
+        /* =================================================================
+         *  PROGRESSION & MOON REVEAL
+         * ================================================================= */
+
+        function checkProgression() {
+            if (collectedStars.size === totalStars) {
+                revealMoon();
+            }
+        }
+
+        function revealMoon() {
+            isMoonRevealed = true;
+
+            // Fade out intro
+            mainTitle.style.opacity = '0';
+            subtitle.style.opacity = '0';
+            starsContainer.style.opacity = '0';
+
+            // Hide counter
+            starCounter.style.opacity = '0';
+
+            setTimeout(() => {
+                mainTitle.style.display = 'none';
+                subtitle.style.display = 'none';
+                starsContainer.style.display = 'none';
+                starCounter.style.display = 'none';
+
+                // Reveal moon
+                moonContainer.style.pointerEvents = 'auto';
+                moonContainer.style.opacity = '1';
+
+                setTimeout(() => {
+                    moonLabel.style.opacity = '1';
+                    moonHint.style.opacity = '1';
+                }, 600);
+            }, 1500);
+        }
+
+        moonElement.addEventListener('click', () => {
+            openModal(finalLoveLetter, true);
+        });
+
+        /* =================================================================
+         *  CANVAS STARFIELD — Twinkling stars + Shooting stars
+         * ================================================================= */
+
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let bgStars = [];
+        let shootingStars = [];
+        const NUM_BG_STARS = 500;
+
+        function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            
-            // Calculate a scaling factor based on screen width
-            // Mobile (approx 350-400px) gets ~0.7, Desktop gets ~1.2
-            gameScale = Math.min(Math.max(canvas.width / 600, 0.6), 1.2);
-            
-            // Update player Y position relative to screen height (15% from bottom)
-            player.y = canvas.height - (canvas.height * 0.15);
-            
-            // Initialize X if it's 0
-            if (player.x === 0) player.x = canvas.width / 2;
-            
-            // Clamp X
-            player.x = Math.min(Math.max(player.x, 0), canvas.width);
         }
-        window.addEventListener('resize', resize);
-        resize(); // Initial call
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        // Input Handling
-        function updatePlayerPos(clientX) {
-            if(gameRunning && !winTriggered) {
-                player.x = clientX;
-            }
-        }
-
-        window.addEventListener('mousemove', (e) => updatePlayerPos(e.clientX));
-        
-        window.addEventListener('touchmove', (e) => {
-            e.preventDefault(); // Prevent scrolling
-            updatePlayerPos(e.touches[0].clientX);
-        }, {passive: false});
-
-        window.addEventListener('touchstart', (e) => {
-            if(gameRunning && !winTriggered) {
-                // Don't prevent default here so buttons still work, 
-                // but update position immediately
-                updatePlayerPos(e.touches[0].clientX);
-            }
-        }, {passive: false});
-
-        // Falling Items
-        class FallingItem {
-            constructor(isHeart) {
-                this.x = Math.random() * (canvas.width - 40 * gameScale) + (20 * gameScale);
-                this.y = -50;
-                // Speed scales with height so it's not too fast on small screens
-                const speedMultiplier = canvas.height / 800; 
-                this.speed = (Math.random() * 3 + 2) * speedMultiplier;
-                
-                this.isHeart = isHeart;
-                this.emoji = isHeart ? heartEmojis[Math.floor(Math.random() * heartEmojis.length)] : obstacleEmoji;
-                
-                // Dynamic Size
-                const baseSize = isHeart ? 35 : 40;
-                this.size = baseSize * gameScale;
-                
-                this.wobble = Math.random() * Math.PI * 2;
-                this.wobbleSpeed = Math.random() * 0.1;
+        /* --- Background Star --- */
+        class BgStar {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.3;
+                this.speedX = (Math.random() - 0.5) * 0.12;
+                this.speedY = (Math.random() - 0.5) * 0.12;
+                this.brightness = Math.random();
+                this.twinkleSpeed = Math.random() * 0.015 + 0.003;
+                this.dir = 1;
+                // Some stars have a warm/cool tint
+                const hue = Math.random() > 0.7 ? (Math.random() > 0.5 ? 40 : 220) : 0;
+                const sat = hue === 0 ? 0 : 30 + Math.random() * 40;
+                this.color = `hsl(${hue}, ${sat}%, 95%)`;
             }
 
             update() {
-                this.y += this.speed;
-                this.wobble += this.wobbleSpeed;
-                this.x += Math.sin(this.wobble) * 0.5; 
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+
+                this.brightness += this.twinkleSpeed * this.dir;
+                if (this.brightness >= 1) { this.brightness = 1; this.dir = -1; }
+                else if (this.brightness <= 0.15) { this.brightness = 0.15; this.dir = 1; }
             }
 
             draw() {
-                ctx.font = `${this.size}px Arial`;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                if(this.isHeart) {
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = "rgba(255, 105, 180, 0.5)";
-                } else {
-                    ctx.shadowBlur = 0;
-                }
-                ctx.fillText(this.emoji, this.x, this.y);
-                ctx.shadowBlur = 0; 
-            }
-        }
-
-        // Particles
-        class Particle {
-            constructor(x, y, type) {
-                this.x = x;
-                this.y = y;
-                this.vx = (Math.random() - 0.5) * 8;
-                this.vy = (Math.random() - 0.5) * 8;
-                this.life = 1.0;
-                this.type = type; 
-                this.color = `hsl(${Math.random() * 60 + 320}, 100%, 70%)`; 
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.vy += 0.1; 
-                this.life -= 0.015;
-            }
-
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = Math.max(0, this.life); 
-                if (this.type === 'heart') {
-                    ctx.font = `${12 * gameScale}px Arial`; // Scale particles too
-                    ctx.fillText("❤️", this.x, this.y);
-                } else {
-                    ctx.fillStyle = this.color;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, Math.random() * 3 * gameScale, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-                ctx.restore();
-            }
-        }
-
-        function createExplosion(x, y, type) {
-            for (let i = 0; i < 12; i++) {
-                particles.push(new Particle(x, y, type));
-            }
-        }
-
-        function checkCollisions() {
-            // Hearts
-            const catchRadius = 60 * gameScale; // Scale catch radius
-            
-            for (let i = hearts.length - 1; i >= 0; i--) {
-                let h = hearts[i];
-                let dist = Math.hypot(h.x - player.x, h.y - player.y);
-
-                if (dist < catchRadius) { 
-                    score += 10;
-                    loveMeter += 5;
-                    createExplosion(h.x, h.y, 'sparkle');
-                    hearts.splice(i, 1);
-                    updateUI();
-                    if (loveMeter >= maxLove) winGame();
-                } else if (h.y > canvas.height) {
-                    hearts.splice(i, 1);
-                }
-            }
-
-            // Obstacles
-            for (let i = obstacles.length - 1; i >= 0; i--) {
-                let o = obstacles[i];
-                let dist = Math.hypot(o.x - player.x, o.y - player.y);
-
-                if (dist < (50 * gameScale)) {
-                    score = Math.max(0, score - 50);
-                    createExplosion(o.x, o.y, 'heart'); 
-                    obstacles.splice(i, 1);
-                    
-                    // Screen Shake
-                    canvas.style.transition = "transform 0.1s";
-                    canvas.style.transform = "translate(5px, 5px)";
-                    setTimeout(() => canvas.style.transform = "translate(0, 0)", 100);
-                    
-                    updateUI();
-                } else if (o.y > canvas.height) {
-                    obstacles.splice(i, 1);
-                }
-            }
-        }
-
-        function updateUI() {
-            document.getElementById('scoreVal').innerText = score;
-            let fillPercent = Math.min(100, (loveMeter / maxLove) * 100);
-            document.getElementById('meter-fill').style.width = fillPercent + "%";
-        }
-
-        function winGame() {
-            gameRunning = false;
-            winTriggered = true;
-            
-            document.getElementById('hud').style.display = 'none';
-            document.getElementById('meter-container').style.display = 'none';
-            document.getElementById('meter-label').style.display = 'none';
-            document.getElementById('final-message').style.opacity = 1;
-        }
-
-        const stars = Array.from({length: 80}, () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            size: Math.random() * 2 + 0.5,
-            blinkOffset: Math.random() * 100,
-            speed: Math.random() * 0.5 + 0.1
-        }));
-
-        function drawBackground() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = "white";
-            stars.forEach(star => {
-                const brightness = 0.5 + 0.5 * Math.sin(Date.now() * 0.002 + star.blinkOffset);
-                ctx.globalAlpha = brightness;
+                ctx.globalAlpha = this.brightness;
+                ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+
+                // Draw as tiny 4-point star for larger ones, circle for small
+                if (this.size > 1.5) {
+                    this.drawStarShape(this.x, this.y, 4, this.size, this.size * 0.4);
+                } else {
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                }
                 ctx.fill();
-                
-                star.y -= star.speed;
-                if(star.y < 0) star.y = canvas.height;
-            });
-            ctx.globalAlpha = 1;
+                ctx.globalAlpha = 1;
+            }
+
+            drawStarShape(cx, cy, spikes, outerR, innerR) {
+                let rot = Math.PI / 2 * 3;
+                const step = Math.PI / spikes;
+                ctx.moveTo(cx, cy - outerR);
+                for (let i = 0; i < spikes; i++) {
+                    ctx.lineTo(cx + Math.cos(rot) * outerR, cy + Math.sin(rot) * outerR);
+                    rot += step;
+                    ctx.lineTo(cx + Math.cos(rot) * innerR, cy + Math.sin(rot) * innerR);
+                    rot += step;
+                }
+                ctx.lineTo(cx, cy - outerR);
+                ctx.closePath();
+            }
         }
 
-        function loop() {
-            drawBackground();
+        /* --- Shooting Star --- */
+        class ShootingStar {
+            constructor() {
+                this.reset();
+            }
 
-            if (gameRunning) {
-                player.update();
-                player.draw();
-                
-                hearts.forEach(h => { h.update(); h.draw(); });
-                obstacles.forEach(o => { o.update(); o.draw(); });
-                
-                if (Math.random() < 0.03) hearts.push(new FallingItem(true));
-                if (Math.random() < 0.015) obstacles.push(new FallingItem(false));
-                
-                checkCollisions();
-            } 
-            
-            // Particles run always (for win screen fireworks)
-            particles.forEach((p, index) => {
-                p.update();
-                p.draw();
-                if(p.life <= 0) particles.splice(index, 1);
-            });
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height * 0.5;
+                this.len = Math.random() * 80 + 40;
+                this.speed = Math.random() * 6 + 4;
+                this.angle = (Math.PI / 4) + (Math.random() * 0.3 - 0.15);
+                this.opacity = 1;
+                this.active = false;
+                this.timer = Math.random() * 600 + 200; // frames until next appearance
+            }
 
-            if (winTriggered) {
-                // Random Fireworks on win screen
-                if(Math.random() < 0.1) {
-                    createExplosion(Math.random() * canvas.width, Math.random() * canvas.height, 'sparkle');
+            update() {
+                if (!this.active) {
+                    this.timer--;
+                    if (this.timer <= 0) this.active = true;
+                    return;
+                }
+
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                this.opacity -= 0.012;
+
+                if (this.opacity <= 0 || this.x > canvas.width + 50 || this.y > canvas.height + 50) {
+                    this.reset();
                 }
             }
 
-            requestAnimationFrame(loop);
+            draw() {
+                if (!this.active) return;
+
+                const tailX = this.x - Math.cos(this.angle) * this.len;
+                const tailY = this.y - Math.sin(this.angle) * this.len;
+
+                const grad = ctx.createLinearGradient(tailX, tailY, this.x, this.y);
+                grad.addColorStop(0, `rgba(255, 255, 255, 0)`);
+                grad.addColorStop(1, `rgba(255, 255, 255, ${this.opacity})`);
+
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(tailX, tailY);
+                ctx.lineTo(this.x, this.y);
+                ctx.stroke();
+
+                // Bright head
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-        function startGame() {
-            document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('hud').style.display = 'block';
-            document.getElementById('meter-container').style.display = 'block';
-            document.getElementById('meter-label').style.display = 'block';
-            gameRunning = true;
-            loop();
+        function initStarfield() {
+            bgStars = [];
+            for (let i = 0; i < NUM_BG_STARS; i++) bgStars.push(new BgStar());
+            shootingStars = [];
+            for (let i = 0; i < 3; i++) shootingStars.push(new ShootingStar());
         }
+
+        function animateStarfield() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (const s of bgStars) { s.update(); s.draw(); }
+            for (const s of shootingStars) { s.update(); s.draw(); }
+            requestAnimationFrame(animateStarfield);
+        }
+
+        initStarfield();
+        animateStarfield();
+
+        /* =================================================================
+         *  FLOATING HEART PARTICLES
+         * ================================================================= */
+
+        function createHeartParticle() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            heart.textContent = Math.random() > 0.5 ? '💕' : '✨';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.fontSize = (Math.random() * 0.8 + 0.6) + 'rem';
+            heart.style.animationDuration = (Math.random() * 10 + 12) + 's';
+            heart.style.animationDelay = (Math.random() * 5) + 's';
+            document.body.appendChild(heart);
+
+            // Remove after animation
+            setTimeout(() => heart.remove(), 22000);
+        }
+
+        // Spawn hearts periodically
+        setInterval(createHeartParticle, 3000);
+        // Spawn a few immediately
+        for (let i = 0; i < 5; i++) setTimeout(createHeartParticle, i * 600);
 
     </script>
 </body>
+
 </html>
