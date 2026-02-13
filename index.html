@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>You Are My Galaxy 💫 — For Fouzia</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,14 @@
             font-family: 'Montserrat', sans-serif;
             color: white;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            /* Remove blue tap highlight on mobile */
             /* Deep space gradient */
             background: radial-gradient(ellipse at 20% 80%, #1a0533 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 20%, #0c1445 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 50%, #0d0d2b 0%, #050510 100%);
+            /* Safe area for notched phones */
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
         /* ============================================
@@ -181,6 +185,8 @@
             animation: pulse-star 3s infinite ease-in-out;
             transition: transform 0.3s ease, filter 0.5s ease;
             filter: drop-shadow(0 0 8px var(--accent-gold));
+            touch-action: manipulation;
+            /* Prevent double-tap zoom on mobile */
         }
 
         /* The actual star shape using CSS clip-path */
@@ -300,6 +306,7 @@
             cursor: pointer;
             animation: moon-float 8s ease-in-out infinite;
             position: relative;
+            touch-action: manipulation;
             /* Moon with craters look */
             background: radial-gradient(circle at 35% 35%, #fffde7 0%, #f5f0d0 15%, #ddd5b5 40%, #c4bc9a 65%, #b0a888 100%);
             box-shadow:
@@ -392,6 +399,10 @@
             border-radius: 24px;
             max-width: 85%;
             width: 480px;
+            max-height: 85vh;
+            /* Prevent modal from overflowing viewport */
+            overflow-y: auto;
+            /* Scroll if content is tall */
             text-align: center;
             box-shadow:
                 0 15px 50px rgba(0, 0, 0, 0.4),
@@ -400,7 +411,6 @@
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             color: #fff;
             position: relative;
-            overflow: hidden;
         }
 
         /* Decorative gradient border glow on modal */
@@ -452,6 +462,9 @@
             outline: none;
             text-transform: uppercase;
             font-size: 0.85rem;
+            touch-action: manipulation;
+            min-height: 44px;
+            /* Apple HIG minimum touch target */
         }
 
         .close-btn:hover {
@@ -521,51 +534,192 @@
         }
 
         /* ============================================
-           RESPONSIVE
+           RESPONSIVE — TABLETS (≤768px)
            ============================================ */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .interactive-star {
-                width: 45px;
-                height: 45px;
+                width: 55px;
+                height: 55px;
             }
 
             .modal {
-                width: 92%;
-                padding: 1.8rem;
+                width: 90%;
+                padding: 2rem;
+                max-height: 80vh;
             }
 
             #moon {
-                width: 120px;
-                height: 120px;
+                width: 140px;
+                height: 140px;
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE — PHONES (≤480px)
+           ============================================ */
+        @media (max-width: 480px) {
+            .interactive-star {
+                width: 50px;
+                height: 50px;
+            }
+
+            .modal {
+                width: 94%;
+                max-width: 94%;
+                padding: 1.5rem;
+                border-radius: 18px;
+                max-height: 75vh;
+            }
+
+            .modal p {
+                font-size: 1rem;
+                line-height: 1.7;
+                margin-bottom: 1.5rem;
+            }
+
+            .modal.final-modal p {
+                font-size: 1.05rem;
+            }
+
+            .modal-star-icon {
+                font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .close-btn {
+                padding: 14px 36px;
+                font-size: 0.8rem;
+                min-height: 48px;
+            }
+
+            #moon {
+                width: 110px;
+                height: 110px;
+            }
+
+            #moon-label {
+                margin-top: 20px;
+                padding: 0 1rem;
             }
 
             #star-counter {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
                 padding: 6px 12px;
+                top: 12px;
+                right: 12px;
             }
 
+            /* Spread stars evenly so they don't overlap on narrow screens */
             .star-1 {
-                top: 14%;
+                top: 12%;
                 left: 8%;
             }
 
             .star-2 {
-                top: 16%;
+                top: 12%;
                 right: 8%;
             }
 
             .star-3 {
-                bottom: 22%;
-                left: 12%;
+                bottom: 25%;
+                left: 8%;
             }
 
             .star-4 {
-                bottom: 18%;
-                right: 10%;
+                bottom: 25%;
+                right: 8%;
             }
 
             .star-5 {
-                top: 58%;
+                top: 62%;
+                left: 50%;
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE — VERY SMALL PHONES (≤360px)
+           ============================================ */
+        @media (max-width: 360px) {
+            h1.title {
+                font-size: 1.3rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .interactive-star {
+                width: 42px;
+                height: 42px;
+            }
+
+            .modal {
+                padding: 1.2rem;
+                max-height: 70vh;
+            }
+
+            #moon {
+                width: 90px;
+                height: 90px;
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE — LANDSCAPE PHONES
+           ============================================ */
+        @media (max-height: 500px) and (orientation: landscape) {
+            h1.title {
+                font-size: 1.4rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .interactive-star {
+                width: 40px;
+                height: 40px;
+            }
+
+            #moon {
+                width: 80px;
+                height: 80px;
+            }
+
+            #moon-label {
+                margin-top: 10px;
+            }
+
+            .modal {
+                max-height: 90vh;
+                padding: 1.2rem 1.5rem;
+            }
+
+            /* Spread stars into left/right halves in landscape */
+            .star-1 {
+                top: 15%;
+                left: 5%;
+            }
+
+            .star-2 {
+                top: 15%;
+                right: 5%;
+            }
+
+            .star-3 {
+                bottom: 15%;
+                left: 20%;
+            }
+
+            .star-4 {
+                bottom: 15%;
+                right: 20%;
+            }
+
+            .star-5 {
+                top: 50%;
+                left: 50%;
             }
         }
     </style>
@@ -802,7 +956,9 @@
         const ctx = canvas.getContext('2d');
         let bgStars = [];
         let shootingStars = [];
-        const NUM_BG_STARS = 500;
+        // Use fewer stars on mobile for better performance
+        const isMobile = window.innerWidth <= 600;
+        const NUM_BG_STARS = isMobile ? 200 : 500;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -964,10 +1120,12 @@
             setTimeout(() => heart.remove(), 22000);
         }
 
-        // Spawn hearts periodically
-        setInterval(createHeartParticle, 3000);
+        // Spawn hearts periodically — less often on mobile for performance
+        const heartInterval = isMobile ? 5000 : 3000;
+        const initialHearts = isMobile ? 3 : 5;
+        setInterval(createHeartParticle, heartInterval);
         // Spawn a few immediately
-        for (let i = 0; i < 5; i++) setTimeout(createHeartParticle, i * 600);
+        for (let i = 0; i < initialHearts; i++) setTimeout(createHeartParticle, i * 600);
 
     </script>
 </body>
