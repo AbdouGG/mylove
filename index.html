@@ -1287,6 +1287,142 @@
                 height: 95px;
             }
         }
+
+        /* ============================================
+           HEART FINALE SCENE
+           ============================================ */
+        #heart-scene {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease;
+            background: radial-gradient(ellipse at 50% 50%, rgba(30, 5, 30, 0.95), rgba(5, 5, 16, 0.98));
+        }
+
+        #heart-scene.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #heart-canvas {
+            position: relative;
+            z-index: 310;
+        }
+
+        .heart-names {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.2rem, 7vw, 4rem);
+            text-align: center;
+            margin-top: 25px;
+            opacity: 0;
+            transform: translateY(30px) scale(0.8);
+            transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 320;
+            position: relative;
+            line-height: 1.4;
+            color: white;
+        }
+
+        .heart-names.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .heart-names .name-malek {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 25px rgba(96, 165, 250, 0.7));
+            text-shadow: none;
+        }
+
+        .heart-names .name-and {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.7em;
+            margin: 0 6px;
+        }
+
+        .heart-names .name-fouzia {
+            background: linear-gradient(135deg, #f472b6, #ec4899, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 25px rgba(236, 72, 153, 0.7));
+            text-shadow: none;
+        }
+
+        .heart-forever {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-top: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.2s ease 0.5s;
+            z-index: 320;
+            position: relative;
+            background: linear-gradient(90deg, #ffd700, #ff6b9d, #a855f7, #ffd700);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: forever-shimmer 4s linear infinite;
+        }
+
+        .heart-forever.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes forever-shimmer {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 300% 50%;
+            }
+        }
+
+        /* Tiny floating hearts in the heart scene */
+        .scene-heart-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 305;
+            opacity: 0;
+            animation: scene-heart-rise linear forwards;
+        }
+
+        @keyframes scene-heart-rise {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.5) rotate(0deg);
+            }
+
+            15% {
+                opacity: 0.8;
+            }
+
+            85% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.2) rotate(30deg);
+            }
+        }
     </style>
 </head>
 
@@ -1370,8 +1506,19 @@
                 <div class="chick-foot"></div>
             </div>
         </div>
-        <div class="chicken-label" id="chicken-label">Baby Checkien 🐣</div>
+        <div class="chicken-label" id="chicken-label">Baby Chicken 🐣</div>
         <div class="chicken-sublabel" id="chicken-sublabel">~ chirp chirp ~ forever yours ~</div>
+    </div>
+
+    <!-- Heart Finale Scene -->
+    <div id="heart-scene">
+        <canvas id="heart-canvas"></canvas>
+        <div class="heart-names" id="heart-names">
+            <span class="name-malek">Malek</span>
+            <span class="name-and">&</span>
+            <span class="name-fouzia">Fouzia</span>
+        </div>
+        <div class="heart-forever" id="heart-forever">Forever ❤️</div>
     </div>
 
     <!-- Modal Template -->
@@ -1618,6 +1765,11 @@
 
                 // Start floating feathers
                 startFeathers();
+
+                // Auto-transition to heart scene after 6 seconds
+                setTimeout(() => {
+                    startHeartScene();
+                }, 6000);
             }, 500);
         }
 
@@ -1895,6 +2047,220 @@
         setInterval(createHeartParticle, heartInterval);
         // Spawn a few immediately
         for (let i = 0; i < initialHearts; i++) setTimeout(createHeartParticle, i * 600);
+
+        /* =================================================================
+         *  HEART FINALE — Animated heart drawing with names
+         * ================================================================= */
+
+        const heartScene = document.getElementById('heart-scene');
+        const heartCanvas = document.getElementById('heart-canvas');
+        const heartCtx = heartCanvas.getContext('2d');
+        const heartNamesEl = document.getElementById('heart-names');
+        const heartForeverEl = document.getElementById('heart-forever');
+        let heartSceneStarted = false;
+
+        function startHeartScene() {
+            if (heartSceneStarted) return;
+            heartSceneStarted = true;
+
+            // Fade out chicken scene
+            chickenScene.style.opacity = '0';
+            chickenScene.style.transition = 'opacity 1.5s ease';
+
+            setTimeout(() => {
+                chickenScene.classList.remove('active');
+                chickenScene.style.display = 'none';
+
+                // Size the heart canvas
+                const size = Math.min(window.innerWidth * 0.8, window.innerHeight * 0.45, 400);
+                heartCanvas.width = size;
+                heartCanvas.height = size;
+
+                // Show heart scene
+                heartScene.classList.add('active');
+
+                // Start floating heart particles
+                startHeartSceneParticles();
+
+                // Animate the heart drawing
+                setTimeout(() => {
+                    animateHeartDraw(size);
+                }, 800);
+            }, 1800);
+        }
+
+        function animateHeartDraw(size) {
+            const cx = size / 2;
+            const cy = size / 2;
+            const scale = size / 320;
+
+            // Generate heart points using parametric equation
+            const points = [];
+            const totalPoints = 300;
+            for (let i = 0; i <= totalPoints; i++) {
+                const t = (i / totalPoints) * Math.PI * 2;
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+                points.push({
+                    x: cx + x * scale * 8,
+                    y: cy + y * scale * 8 - 10 * scale
+                });
+            }
+
+            let currentPoint = 0;
+            const speed = 1; // points per frame — slow romantic draw
+
+            function drawFrame() {
+                // Clear and redraw
+                heartCtx.clearRect(0, 0, size, size);
+
+                // Outer glow
+                heartCtx.shadowColor = '#ff2d75';
+                heartCtx.shadowBlur = 25;
+                heartCtx.strokeStyle = '#ff2d75';
+                heartCtx.lineWidth = 3.5 * scale;
+                heartCtx.lineCap = 'round';
+                heartCtx.lineJoin = 'round';
+
+                // Draw path up to current point
+                heartCtx.beginPath();
+                heartCtx.moveTo(points[0].x, points[0].y);
+                for (let i = 1; i <= currentPoint; i++) {
+                    heartCtx.lineTo(points[i].x, points[i].y);
+                }
+                heartCtx.stroke();
+
+                // Inner brighter line
+                heartCtx.shadowColor = '#ff6b9d';
+                heartCtx.shadowBlur = 10;
+                heartCtx.strokeStyle = 'rgba(255, 150, 200, 0.8)';
+                heartCtx.lineWidth = 1.5 * scale;
+                heartCtx.beginPath();
+                heartCtx.moveTo(points[0].x, points[0].y);
+                for (let i = 1; i <= currentPoint; i++) {
+                    heartCtx.lineTo(points[i].x, points[i].y);
+                }
+                heartCtx.stroke();
+                heartCtx.shadowBlur = 0;
+
+                // Sparkle at the tip of the drawing
+                if (currentPoint < points.length) {
+                    const tip = points[currentPoint];
+                    heartCtx.fillStyle = '#fff';
+                    heartCtx.shadowColor = '#fff';
+                    heartCtx.shadowBlur = 15;
+                    heartCtx.beginPath();
+                    heartCtx.arc(tip.x, tip.y, 4 * scale, 0, Math.PI * 2);
+                    heartCtx.fill();
+                    heartCtx.shadowBlur = 0;
+                }
+
+                currentPoint += speed;
+
+                if (currentPoint < points.length) {
+                    requestAnimationFrame(drawFrame);
+                } else {
+                    // Heart complete — fill with gradient glow
+                    fillHeartGlow(points, size);
+                    // Reveal names
+                    setTimeout(() => {
+                        heartNamesEl.classList.add('visible');
+                        setTimeout(() => {
+                            heartForeverEl.classList.add('visible');
+                        }, 800);
+                    }, 600);
+                }
+            }
+
+            drawFrame();
+        }
+
+        function fillHeartGlow(points, size) {
+            const cx = size / 2;
+            const cy = size / 2;
+
+            // Soft radial fill inside the heart
+            const grad = heartCtx.createRadialGradient(cx, cy - 10, 10, cx, cy, size * 0.45);
+            grad.addColorStop(0, 'rgba(255, 60, 120, 0.35)');
+            grad.addColorStop(0.5, 'rgba(255, 40, 100, 0.15)');
+            grad.addColorStop(1, 'rgba(255, 20, 80, 0)');
+
+            heartCtx.fillStyle = grad;
+            heartCtx.beginPath();
+            heartCtx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                heartCtx.lineTo(points[i].x, points[i].y);
+            }
+            heartCtx.closePath();
+            heartCtx.fill();
+
+            // Pulsing glow animation on the heart outline
+            let glowPhase = 0;
+            function pulseGlow() {
+                glowPhase += 0.03;
+                const glow = 15 + Math.sin(glowPhase) * 12;
+
+                heartCtx.clearRect(0, 0, size, size);
+
+                // Fill
+                heartCtx.fillStyle = grad;
+                heartCtx.beginPath();
+                heartCtx.moveTo(points[0].x, points[0].y);
+                for (let i = 1; i < points.length; i++) {
+                    heartCtx.lineTo(points[i].x, points[i].y);
+                }
+                heartCtx.closePath();
+                heartCtx.fill();
+
+                // Outer stroke
+                heartCtx.shadowColor = '#ff2d75';
+                heartCtx.shadowBlur = glow;
+                heartCtx.strokeStyle = '#ff2d75';
+                heartCtx.lineWidth = 3.5 * (size / 320);
+                heartCtx.lineCap = 'round';
+                heartCtx.lineJoin = 'round';
+                heartCtx.beginPath();
+                heartCtx.moveTo(points[0].x, points[0].y);
+                for (let i = 1; i < points.length; i++) {
+                    heartCtx.lineTo(points[i].x, points[i].y);
+                }
+                heartCtx.stroke();
+
+                // Inner stroke
+                heartCtx.shadowColor = '#ff6b9d';
+                heartCtx.shadowBlur = glow * 0.5;
+                heartCtx.strokeStyle = 'rgba(255, 150, 200, 0.8)';
+                heartCtx.lineWidth = 1.5 * (size / 320);
+                heartCtx.beginPath();
+                heartCtx.moveTo(points[0].x, points[0].y);
+                for (let i = 1; i < points.length; i++) {
+                    heartCtx.lineTo(points[i].x, points[i].y);
+                }
+                heartCtx.stroke();
+                heartCtx.shadowBlur = 0;
+
+                requestAnimationFrame(pulseGlow);
+            }
+            pulseGlow();
+        }
+
+        function startHeartSceneParticles() {
+            const heartEmojis = ['💖', '💕', '❤️', '💗', '✨', '💘', '🌹'];
+            setInterval(() => {
+                if (!heartScene.classList.contains('active')) return;
+
+                const p = document.createElement('div');
+                p.classList.add('scene-heart-particle');
+                p.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                p.style.left = Math.random() * 100 + '%';
+                p.style.bottom = '-30px';
+                p.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+                p.style.animationDuration = (6 + Math.random() * 8) + 's';
+                p.style.animationDelay = (Math.random() * 1) + 's';
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 16000);
+            }, 500);
+        }
 
     </script>
 </body>
