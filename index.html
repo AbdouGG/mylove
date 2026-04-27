@@ -1,2268 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>You Are My Galaxy 💫 — Fouzia</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Montserrat:wght@300;400;600&family=Great+Vibes&display=swap"
-        rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💖 For Fouzia 💖</title>
+    <!-- Using a very readable, elegant serif and sans-serif font -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&family=Outfit:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* ============================================
-           GLOBAL STYLES & THEME
-           ============================================ */
-        :root {
-            --accent-gold: #ffd700;
-            --accent-rose: #ff6b9d;
-            --accent-purple: #a855f7;
-            --accent-pink: #ec4899;
-            --glass-bg: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glow-soft: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 40px rgba(255, 107, 157, 0.2);
-        }
-
-        *,
-        *::before,
-        *::after {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body,
-        html {
-            width: 100%;
-            height: 100%;
+        body {
+            background: #050508;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             overflow: hidden;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Outfit', sans-serif;
             color: white;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            /* Remove blue tap highlight on mobile */
-            /* Deep space gradient */
-            background: radial-gradient(ellipse at 20% 80%, #1a0533 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, #0c1445 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, #0d0d2b 0%, #050510 100%);
-            /* Safe area for notched phones */
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
-        /* ============================================
-           CANVAS STARFIELD
-           ============================================ */
+        /* ── Canvas for stars ── */
         #starfield {
             position: fixed;
-            inset: 0;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 0;
             pointer-events: none;
         }
 
-        /* ============================================
-           FLOATING HEARTS PARTICLES (CSS)
-           ============================================ */
+        /* ── Heart scaling wrapper for mobile ── */
+        #heartWrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-origin: center;
+            transition: transform 0.2s ease-out;
+            z-index: 2;
+        }
+
+        /* ── Heart container ── */
+        .heart-container {
+            position: relative;
+            animation: rotate3d 20s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes rotate3d {
+            0%, 100% { transform: rotateY(-12deg) rotateX(5deg); }
+            50%      { transform: rotateY(12deg) rotateX(-5deg); }
+        }
+
+        #ui {
+            position: relative;
+            width: 520px;
+            height: 520px;
+            transform-style: preserve-3d;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(234,128,176,0.1)); }
+            15%      { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(234,128,176,0.3)); }
+            30%      { transform: scale(1); filter: drop-shadow(0 0 10px rgba(234,128,176,0.1)); }
+            45%      { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(234,128,176,0.2)); }
+            60%      { transform: scale(1); filter: drop-shadow(0 0 10px rgba(234,128,176,0.1)); }
+        }
+
+        /* ── Love words ── */
+        .love_word {
+            position: absolute;
+            color: #ffb8d2; /* Softer, lighter pink for high readability */
+            font-size: 1.1rem;
+            font-weight: 600;
+            transform: translateY(-50%) rotateZ(var(--rot, -30deg));
+            /* Reduced blur for crisp, readable text */
+            text-shadow:
+                0 0 5px rgba(255, 100, 160, 0.8),
+                0 0 15px rgba(255, 100, 160, 0.4);
+            letter-spacing: 1px;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        .love_horizontal {
+            animation: sway var(--dur, 8s) infinite alternate ease-in-out;
+            animation-delay: calc(var(--i) * -280ms);
+        }
+
+        @keyframes sway {
+            0%   { transform: translateX(-8px) translateY(-50%) rotateZ(var(--rot, -30deg)); }
+            100% { transform: translateX(8px) translateY(-50%) rotateZ(var(--rot, -30deg));  }
+        }
+
+        /* ── Floating particles ── */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+            animation: float-up linear infinite;
+        }
+
+        @keyframes float-up {
+            0%   { opacity: 0; transform: translateY(100vh) scale(0); }
+            10%  { opacity: 0.6; }
+            90%  { opacity: 0.2; }
+            100% { opacity: 0; transform: translateY(-15vh) scale(1.2); }
+        }
+
+        /* ── Heart-shaped particle burst ── */
         .heart-particle {
             position: fixed;
-            color: var(--accent-rose);
-            font-size: 1rem;
+            font-size: 1.5rem;
             opacity: 0;
+            z-index: 101;
             pointer-events: none;
-            z-index: 5;
-            animation: heart-rise linear infinite;
+            animation: heart-float 4s ease-out forwards;
         }
 
-        @keyframes heart-rise {
-            0% {
-                opacity: 0;
-                transform: translateY(100vh) scale(0.5) rotate(0deg);
-            }
-
-            10% {
-                opacity: 0.6;
-            }
-
-            90% {
-                opacity: 0.3;
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateY(-10vh) scale(1.2) rotate(20deg);
-            }
+        @keyframes heart-float {
+            0%   { opacity: 1; transform: translateY(0) scale(0.5) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(-300px) scale(1.5) rotate(30deg); }
         }
 
-        /* ============================================
-           MAIN APP CONTAINER
-           ============================================ */
-        #app {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* ============================================
-           TITLE TYPOGRAPHY
-           ============================================ */
-        h1.title {
-            font-family: 'Cinzel Decorative', cursive;
-            font-size: clamp(1.6rem, 5vw, 2.8rem);
-            text-align: center;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #ffd700, #ff6b9d, #a855f7, #ffd700);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: float 6s ease-in-out infinite, gradient-shift 8s ease infinite;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
-            z-index: 20;
-            pointer-events: none;
-            transition: opacity 1.5s ease;
-            padding: 0 1.5rem;
-            line-height: 1.4;
-        }
-
-        .subtitle {
-            font-family: 'Great Vibes', cursive;
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: rgba(255, 107, 157, 0.8);
-            text-shadow: 0 0 15px rgba(255, 107, 157, 0.4);
-            animation: float 6s ease-in-out infinite reverse;
-            pointer-events: none;
-            transition: opacity 1.5s ease;
-        }
-
-        /* ============================================
-           STAR COUNTER
-           ============================================ */
-        #star-counter {
+        /* ══════════════════════════════════════
+           ──  FOUZIA POPUP OVERLAY  ──
+           ══════════════════════════════════════ */
+        .popup-overlay {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: rgba(255, 215, 0, 0.8);
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            z-index: 50;
-            transition: all 0.5s ease;
-        }
-
-        #star-counter.complete {
-            color: var(--accent-rose);
-            border-color: rgba(255, 107, 157, 0.4);
-            box-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
-        }
-
-        /* ============================================
-           INTERACTIVE STARS — Real star shapes!
-           ============================================ */
-        .star-container {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            transition: opacity 1.5s ease;
-        }
-
-        .interactive-star {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            pointer-events: auto;
-            animation: pulse-star 3s infinite ease-in-out;
-            transition: transform 0.3s ease, filter 0.5s ease;
-            filter: drop-shadow(0 0 8px var(--accent-gold));
-            touch-action: manipulation;
-            /* Prevent double-tap zoom on mobile */
-        }
-
-        /* The actual star shape using CSS clip-path */
-        .interactive-star .star-shape {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ffd700, #ffec80, #fff, #ffd700);
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            position: relative;
-        }
-
-        /* Inner sparkle on each star */
-        .interactive-star .star-shape::after {
-            content: '';
-            position: absolute;
-            inset: 15%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, transparent 70%);
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-        }
-
-        .interactive-star:hover {
-            transform: scale(1.3) rotate(15deg);
-            filter: drop-shadow(0 0 20px var(--accent-gold)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.5));
-        }
-
-        .interactive-star.collected .star-shape {
-            background: linear-gradient(135deg, #666, #888, #aaa, #666);
-        }
-
-        .interactive-star.collected {
-            animation: none;
-            opacity: 0.35;
-            filter: drop-shadow(0 0 3px rgba(150, 150, 150, 0.3));
-            cursor: default;
-            transform: scale(0.85);
-        }
-
-        /* Sparkle burst on click */
-        .interactive-star .sparkle-ring {
-            position: absolute;
-            inset: -20px;
-            border: 2px solid var(--accent-gold);
-            border-radius: 50%;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .interactive-star.just-clicked .sparkle-ring {
-            animation: sparkle-burst 0.6s ease-out forwards;
-        }
-
-        @keyframes sparkle-burst {
-            0% {
-                transform: scale(0.5);
-                opacity: 1;
-            }
-
-            100% {
-                transform: scale(2.5);
-                opacity: 0;
-            }
-        }
-
-        /* Star positions (scattered nicely) */
-        .star-1 {
-            top: 18%;
-            left: 15%;
-            animation-delay: 0s;
-        }
-
-        .star-2 {
-            top: 22%;
-            right: 18%;
-            animation-delay: 0.6s;
-        }
-
-        .star-3 {
-            bottom: 28%;
-            left: 22%;
-            animation-delay: 1.2s;
-        }
-
-        .star-4 {
-            bottom: 22%;
-            right: 20%;
-            animation-delay: 1.8s;
-        }
-
-        .star-5 {
-            top: 55%;
-            left: 50%;
-            transform: translateX(-50%);
-            animation-delay: 0.3s;
-        }
-
-        /* ============================================
-           THE MOON (Finale)
-           ============================================ */
-        #moon-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 2.5s ease-in-out;
-            z-index: 30;
-        }
-
-        #moon {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            cursor: pointer;
-            animation: moon-float 8s ease-in-out infinite;
-            position: relative;
-            touch-action: manipulation;
-            /* Moon with craters look */
-            background: radial-gradient(circle at 35% 35%, #fffde7 0%, #f5f0d0 15%, #ddd5b5 40%, #c4bc9a 65%, #b0a888 100%);
-            box-shadow:
-                0 0 60px rgba(255, 253, 230, 0.5),
-                0 0 120px rgba(255, 253, 230, 0.2),
-                inset -25px -15px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Moon craters */
-        #moon::before {
-            content: '';
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            background: radial-gradient(circle, rgba(0, 0, 0, 0.08), transparent);
-            border-radius: 50%;
-            top: 30%;
-            left: 55%;
-        }
-
-        #moon::after {
-            content: '';
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: radial-gradient(circle, rgba(0, 0, 0, 0.06), transparent);
-            border-radius: 50%;
-            top: 55%;
-            left: 35%;
-        }
-
-        #moon:hover {
-            box-shadow:
-                0 0 80px rgba(255, 253, 230, 0.7),
-                0 0 160px rgba(255, 253, 230, 0.3),
-                inset -25px -15px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        #moon-label {
-            margin-top: 30px;
-            font-family: 'Great Vibes', cursive;
-            font-size: clamp(1.5rem, 4vw, 2.2rem);
-            background: linear-gradient(135deg, #ffd700, #ff6b9d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.5));
-            opacity: 0;
-            transition: opacity 1.5s 0.8s ease;
-            text-align: center;
-        }
-
-        .moon-hint {
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
-            animation: float 3s ease-in-out infinite;
-            opacity: 0;
-            transition: opacity 1.5s 1.5s ease;
-        }
-
-        /* ============================================
-           MODALS — Glassmorphism
-           ============================================ */
-        #modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 100;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            background: rgba(5, 5, 8, 0.9); /* Darker backdrop for contrast */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
-        #modal-overlay.active {
+        .popup-overlay.show {
             opacity: 1;
-            pointer-events: auto;
+            visibility: visible;
         }
 
-        .modal {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            padding: 2.5rem;
-            border-radius: 24px;
-            max-width: 85%;
-            width: 480px;
-            max-height: 85vh;
-            /* Prevent modal from overflowing viewport */
-            overflow-y: auto;
-            /* Scroll if content is tall */
-            text-align: center;
-            box-shadow:
-                0 15px 50px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transform: scale(0.85) translateY(20px);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            color: #fff;
+        .popup-card {
             position: relative;
+            text-align: center;
+            width: 90%;
+            max-width: 400px; /* Optimized for mobile width */
+            padding: 40px 20px;
+            border-radius: 20px;
+            background: #120a10; /* Solid dark background for text readability */
+            border: 2px solid #ea80b0;
+            box-shadow: 0 0 30px rgba(234, 128, 176, 0.4);
+            transform: scale(0.8) translateY(20px);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Decorative gradient border glow on modal */
-        .modal::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border-radius: 24px;
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), transparent 40%, rgba(255, 107, 157, 0.3));
-            z-index: -1;
-            opacity: 0.5;
-        }
-
-        #modal-overlay.active .modal {
+        .popup-overlay.show .popup-card {
             transform: scale(1) translateY(0);
         }
 
-        .modal-star-icon {
+        .popup-hearts {
             font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
+            margin-bottom: 10px;
+            animation: popupPulse 2s ease-in-out infinite;
         }
 
-        .modal p {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.9);
+        @keyframes popupPulse {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.1); }
         }
 
-        .modal.final-modal p {
-            font-size: 1.25rem;
-            font-weight: 400;
-            line-height: 1.9;
-        }
-
-        .close-btn {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 157, 0.2));
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: #fff;
-            padding: 12px 32px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
+        .popup-name {
+            /* Fallback safe fonts, solid color (removed text-fill-color for browser safety) */
+            font-family: 'Playfair Display', serif;
+            font-size: 3.8rem;
             font-weight: 600;
-            letter-spacing: 1.5px;
-            transition: all 0.3s ease;
-            outline: none;
+            font-style: italic;
+            color: #ff85b6; /* Bright visible pink */
+            text-shadow: 0 0 15px rgba(255, 133, 182, 0.6);
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+
+        .popup-subtitle {
+            font-size: 1rem;
+            color: #ffc4d9;
+            margin-top: 5px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            touch-action: manipulation;
-            min-height: 44px;
-            /* Apple HIG minimum touch target */
+            font-weight: 600;
         }
 
-        .close-btn:hover {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 107, 157, 0.4));
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
-            transform: translateY(-2px);
+        .popup-message {
+            font-size: 1.05rem;
+            color: #ffdce8;
+            margin-top: 20px;
+            line-height: 1.5;
+            padding: 0 10px;
         }
 
-        /* ============================================
-           KEYFRAME ANIMATIONS
-           ============================================ */
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-12px);
-            }
-        }
-
-        @keyframes gradient-shift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-
-        @keyframes pulse-star {
-
-            0%,
-            100% {
-                transform: scale(1);
-                filter: drop-shadow(0 0 8px var(--accent-gold));
-            }
-
-            50% {
-                transform: scale(1.15);
-                filter: drop-shadow(0 0 18px var(--accent-gold)) drop-shadow(0 0 35px rgba(255, 215, 0, 0.4));
-            }
-        }
-
-        @keyframes moon-float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-18px);
-            }
-        }
-
-        /* ============================================
-           UTILITY CLASSES
-           ============================================ */
-        .hidden {
-            display: none !important;
-        }
-
-        /* ============================================
-           RESPONSIVE — TABLETS (≤768px)
-           ============================================ */
-        @media (max-width: 768px) {
-            .interactive-star {
-                width: 55px;
-                height: 55px;
-            }
-
-            .modal {
-                width: 90%;
-                padding: 2rem;
-                max-height: 80vh;
-            }
-
-            #moon {
-                width: 140px;
-                height: 140px;
-            }
-        }
-
-        /* ============================================
-           RESPONSIVE — PHONES (≤480px)
-           ============================================ */
-        @media (max-width: 480px) {
-            .interactive-star {
-                width: 50px;
-                height: 50px;
-            }
-
-            .modal {
-                width: 94%;
-                max-width: 94%;
-                padding: 1.5rem;
-                border-radius: 18px;
-                max-height: 75vh;
-            }
-
-            .modal p {
-                font-size: 1rem;
-                line-height: 1.7;
-                margin-bottom: 1.5rem;
-            }
-
-            .modal.final-modal p {
-                font-size: 1.05rem;
-            }
-
-            .modal-star-icon {
-                font-size: 2rem;
-                margin-bottom: 0.8rem;
-            }
-
-            .close-btn {
-                padding: 14px 36px;
-                font-size: 0.8rem;
-                min-height: 48px;
-            }
-
-            #moon {
-                width: 110px;
-                height: 110px;
-            }
-
-            #moon-label {
-                margin-top: 20px;
-                padding: 0 1rem;
-            }
-
-            #star-counter {
-                font-size: 0.75rem;
-                padding: 6px 12px;
-                top: 12px;
-                right: 12px;
-            }
-
-            /* Spread stars evenly so they don't overlap on narrow screens */
-            .star-1 {
-                top: 12%;
-                left: 8%;
-            }
-
-            .star-2 {
-                top: 12%;
-                right: 8%;
-            }
-
-            .star-3 {
-                bottom: 25%;
-                left: 8%;
-            }
-
-            .star-4 {
-                bottom: 25%;
-                right: 8%;
-            }
-
-            .star-5 {
-                top: 62%;
-                left: 50%;
-            }
-        }
-
-        /* ============================================
-           RESPONSIVE — VERY SMALL PHONES (≤360px)
-           ============================================ */
-        @media (max-width: 360px) {
-            h1.title {
-                font-size: 1.3rem;
-            }
-
-            .subtitle {
-                font-size: 1rem;
-            }
-
-            .interactive-star {
-                width: 42px;
-                height: 42px;
-            }
-
-            .modal {
-                padding: 1.2rem;
-                max-height: 70vh;
-            }
-
-            #moon {
-                width: 90px;
-                height: 90px;
-            }
-        }
-
-        /* ============================================
-           RESPONSIVE — LANDSCAPE PHONES
-           ============================================ */
-        @media (max-height: 500px) and (orientation: landscape) {
-            h1.title {
-                font-size: 1.4rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .subtitle {
-                font-size: 1rem;
-            }
-
-            .interactive-star {
-                width: 40px;
-                height: 40px;
-            }
-
-            #moon {
-                width: 80px;
-                height: 80px;
-            }
-
-            #moon-label {
-                margin-top: 10px;
-            }
-
-            .modal {
-                max-height: 90vh;
-                padding: 1.2rem 1.5rem;
-            }
-
-            /* Spread stars into left/right halves in landscape */
-            .star-1 {
-                top: 15%;
-                left: 5%;
-            }
-
-            .star-2 {
-                top: 15%;
-                right: 5%;
-            }
-
-            .star-3 {
-                bottom: 15%;
-                left: 20%;
-            }
-
-            .star-4 {
-                bottom: 15%;
-                right: 20%;
-            }
-
-            .star-5 {
-                top: 50%;
-                left: 50%;
-            }
-        }
-
-        /* ============================================
-           BABY CHECKIEN VFX FINALE
-           ============================================ */
-        #chicken-scene {
-            position: fixed;
-            inset: 0;
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 2s ease;
-        }
-
-        #chicken-scene.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* --- The Egg --- */
-        .egg-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .egg {
-            width: 90px;
-            height: 120px;
-            background: linear-gradient(135deg, #fff8e1, #ffe082, #ffca28, #fff8e1);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            box-shadow:
-                0 0 40px rgba(255, 202, 40, 0.5),
-                0 0 80px rgba(255, 202, 40, 0.2),
-                inset 0 -20px 30px rgba(255, 160, 0, 0.15);
-            animation: egg-wobble 0.4s ease-in-out infinite;
-            position: relative;
-            transition: all 0.5s ease;
-        }
-
-        .egg.cracking {
-            animation: egg-crack 0.8s ease-in-out forwards;
-        }
-
-        .egg.hatched {
-            opacity: 0;
-            transform: scale(0);
-        }
-
-        /* Crack lines on egg */
-        .egg::before {
-            content: '';
-            position: absolute;
-            top: 35%;
-            left: 20%;
-            width: 60%;
-            height: 2px;
-            background: transparent;
-            transform: rotate(-15deg);
-            transition: all 0.3s ease;
-        }
-
-        .egg.cracking::before {
-            background: rgba(139, 90, 43, 0.6);
-            box-shadow:
-                5px 8px 0 rgba(139, 90, 43, 0.4),
-                -3px 12px 0 rgba(139, 90, 43, 0.3),
-                8px -3px 0 rgba(139, 90, 43, 0.5);
-        }
-
-        @keyframes egg-wobble {
-
-            0%,
-            100% {
-                transform: rotate(-3deg);
-            }
-
-            50% {
-                transform: rotate(3deg);
-            }
-        }
-
-        @keyframes egg-crack {
-            0% {
-                transform: rotate(0) scale(1);
-            }
-
-            20% {
-                transform: rotate(-8deg) scale(1.05);
-            }
-
-            40% {
-                transform: rotate(10deg) scale(1.08);
-            }
-
-            60% {
-                transform: rotate(-12deg) scale(1.1);
-            }
-
-            80% {
-                transform: rotate(6deg) scale(1.15);
-            }
-
-            100% {
-                transform: rotate(0) scale(1.2);
-                filter: brightness(1.5);
-            }
-        }
-
-        /* Egg shell fragments */
-        .shell-fragment {
-            position: absolute;
-            width: 20px;
-            height: 25px;
-            background: linear-gradient(135deg, #fff8e1, #ffe082);
-            border-radius: 40% 60% 50% 50%;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .shell-fragment.burst {
-            animation: shell-fly 1s ease-out forwards;
-        }
-
-        @keyframes shell-fly {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) rotate(0deg) scale(1);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3);
-            }
-        }
-
-        /* --- The Baby Chicken --- */
-        .baby-chicken {
-            position: relative;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .baby-chicken.revealed {
-            opacity: 1;
-            transform: scale(1);
-            animation: chicken-bounce 2s ease-in-out infinite;
-        }
-
-        @keyframes chicken-bounce {
-
-            0%,
-            100% {
-                transform: translateY(0) scale(1);
-            }
-
-            30% {
-                transform: translateY(-15px) scale(1.02);
-            }
-
-            50% {
-                transform: translateY(-20px) scale(1.05);
-            }
-
-            70% {
-                transform: translateY(-10px) scale(1.02);
-            }
-        }
-
-        /* Chicken Body */
-        .chick-body {
-            width: 100px;
-            height: 90px;
-            background: radial-gradient(ellipse at 40% 40%, #fff176, #ffee58, #fdd835, #f9a825);
-            border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%;
-            position: relative;
-            box-shadow:
-                0 8px 25px rgba(249, 168, 37, 0.4),
-                0 0 60px rgba(255, 241, 118, 0.3),
-                inset 0 -15px 25px rgba(249, 168, 37, 0.2);
-            margin: 0 auto;
-        }
-
-        /* Chicken Head */
-        .chick-head {
-            width: 70px;
-            height: 65px;
-            background: radial-gradient(ellipse at 45% 40%, #fff9c4, #fff176, #ffee58, #fdd835);
-            border-radius: 50%;
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow:
-                0 0 30px rgba(255, 241, 118, 0.4),
-                inset 0 -8px 15px rgba(249, 168, 37, 0.15);
-        }
-
-        /* Eyes */
-        .chick-eye {
-            width: 10px;
-            height: 12px;
-            background: radial-gradient(circle at 40% 35%, #4a2800, #2d1600);
-            border-radius: 50%;
-            position: absolute;
-            top: 22px;
-            box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .chick-eye::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-        }
-
-        .chick-eye.left {
-            left: 16px;
-        }
-
-        .chick-eye.right {
-            right: 16px;
-        }
-
-        /* Beak */
-        .chick-beak {
-            width: 16px;
-            height: 10px;
-            background: linear-gradient(135deg, #ff8f00, #ff6f00);
-            position: absolute;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
-            box-shadow: 0 2px 4px rgba(230, 81, 0, 0.3);
-            animation: beak-chirp 1.5s ease-in-out infinite;
-        }
-
-        @keyframes beak-chirp {
-
-            0%,
-            70%,
-            100% {
-                transform: translateX(-50%) scaleY(1);
-            }
-
-            75% {
-                transform: translateX(-50%) scaleY(1.4);
-            }
-
-            80% {
-                transform: translateX(-50%) scaleY(0.8);
-            }
-
-            85% {
-                transform: translateX(-50%) scaleY(1.3);
-            }
-
-            90% {
-                transform: translateX(-50%) scaleY(1);
-            }
-        }
-
-        /* Blush cheeks */
-        .chick-blush {
-            width: 14px;
-            height: 8px;
-            background: rgba(255, 138, 128, 0.5);
-            border-radius: 50%;
-            position: absolute;
-            bottom: 22px;
-            filter: blur(2px);
-        }
-
-        .chick-blush.left {
-            left: 8px;
-        }
-
-        .chick-blush.right {
-            right: 8px;
-        }
-
-        /* Crown / Comb */
-        .chick-comb {
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 2px;
-        }
-
-        .comb-spike {
-            width: 8px;
-            height: 12px;
-            background: linear-gradient(to top, #ef5350, #e53935);
-            border-radius: 50% 50% 30% 30%;
-            box-shadow: 0 0 6px rgba(229, 57, 53, 0.4);
-        }
-
-        .comb-spike:nth-child(2) {
-            height: 16px;
-            margin-top: -4px;
-        }
-
-        /* Wings */
-        .chick-wing {
-            width: 35px;
-            height: 45px;
-            background: linear-gradient(135deg, #ffee58, #fdd835, #f9a825);
-            position: absolute;
-            top: 15px;
-            border-radius: 60% 40% 50% 50%;
-            transform-origin: top center;
-            box-shadow: inset 0 -5px 10px rgba(249, 168, 37, 0.3);
-        }
-
-        .chick-wing.left {
-            left: -18px;
-            animation: wing-flap-left 0.6s ease-in-out infinite;
-        }
-
-        .chick-wing.right {
-            right: -18px;
-            animation: wing-flap-right 0.6s ease-in-out infinite;
-        }
-
-        @keyframes wing-flap-left {
-
-            0%,
-            100% {
-                transform: rotate(5deg);
-            }
-
-            50% {
-                transform: rotate(-30deg);
-            }
-        }
-
-        @keyframes wing-flap-right {
-
-            0%,
-            100% {
-                transform: rotate(-5deg);
-            }
-
-            50% {
-                transform: rotate(30deg);
-            }
-        }
-
-        /* Feet */
-        .chick-feet {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: -5px;
-        }
-
-        .chick-foot {
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 12px solid #ff8f00;
-            position: relative;
-        }
-
-        .chick-foot::before,
-        .chick-foot::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 10px solid #ff8f00;
-            top: -12px;
-        }
-
-        .chick-foot::before {
-            left: -10px;
-            transform: rotate(-20deg);
-        }
-
-        .chick-foot::after {
-            right: -10px;
-            transform: rotate(20deg);
-        }
-
-        /* Chicken Label */
-        .chicken-label {
-            font-family: 'Great Vibes', cursive;
-            font-size: clamp(1.8rem, 5vw, 2.8rem);
-            background: linear-gradient(135deg, #ffd700, #ffee58, #ff6b9d, #ffd700);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient-shift 4s ease infinite;
+        .popup-btn {
             margin-top: 30px;
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease 0.5s;
-            text-align: center;
-        }
-
-        .chicken-label.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .chicken-sublabel {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-top: 8px;
-            opacity: 0;
-            transition: opacity 1s ease 1.2s;
-            letter-spacing: 2px;
-        }
-
-        .chicken-sublabel.visible {
-            opacity: 1;
-        }
-
-        /* Sparkle particles around chicken */
-        .chick-sparkle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: sparkle-float 2s ease-in-out infinite;
-        }
-
-        @keyframes sparkle-float {
-
-            0%,
-            100% {
-                opacity: 0;
-                transform: translate(0, 0) scale(0);
-            }
-
-            50% {
-                opacity: 1;
-                transform: translate(var(--dx), var(--dy)) scale(1);
-            }
-        }
-
-        /* Floating feather particles */
-        .feather {
-            position: fixed;
-            font-size: 1.2rem;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 210;
-            animation: feather-drift linear infinite;
-        }
-
-        @keyframes feather-drift {
-            0% {
-                opacity: 0;
-                transform: translateY(-50px) rotate(0deg) translateX(0);
-            }
-
-            10% {
-                opacity: 0.7;
-            }
-
-            50% {
-                transform: translateY(40vh) rotate(180deg) translateX(30px);
-            }
-
-            90% {
-                opacity: 0.4;
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateY(100vh) rotate(360deg) translateX(-20px);
-            }
-        }
-
-        /* Confetti burst */
-        .confetti {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 210;
-        }
-
-        .confetti.burst {
-            animation: confetti-fall 2s ease-out forwards;
-        }
-
-        @keyframes confetti-fall {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) rotate(0deg) scale(1);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translate(var(--cx), var(--cy)) rotate(var(--crot)) scale(0.5);
-            }
-        }
-
-        /* Responsive chicken */
-        @media (max-width: 480px) {
-            .chick-body {
-                width: 80px;
-                height: 72px;
-            }
-
-            .chick-head {
-                width: 56px;
-                height: 52px;
-                top: -32px;
-            }
-
-            .chick-eye {
-                width: 8px;
-                height: 10px;
-                top: 18px;
-            }
-
-            .chick-eye.left {
-                left: 12px;
-            }
-
-            .chick-eye.right {
-                right: 12px;
-            }
-
-            .chick-wing {
-                width: 28px;
-                height: 36px;
-            }
-
-            .chick-wing.left {
-                left: -14px;
-            }
-
-            .chick-wing.right {
-                right: -14px;
-            }
-
-            .egg {
-                width: 70px;
-                height: 95px;
-            }
-        }
-
-        /* ============================================
-           HEART FINALE SCENE
-           ============================================ */
-        #heart-scene {
-            position: fixed;
-            inset: 0;
-            z-index: 300;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 2s ease;
-            background: radial-gradient(ellipse at 50% 50%, rgba(30, 5, 30, 0.95), rgba(5, 5, 16, 0.98));
-        }
-
-        #heart-scene.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        #heart-canvas {
-            position: relative;
-            z-index: 310;
-        }
-
-        .heart-names {
-            font-family: 'Great Vibes', cursive;
-            font-size: clamp(2.2rem, 7vw, 4rem);
-            text-align: center;
-            margin-top: 25px;
-            opacity: 0;
-            transform: translateY(30px) scale(0.8);
-            transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 320;
-            position: relative;
-            line-height: 1.4;
-            color: white;
-        }
-
-        .heart-names.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .heart-names .name-malek {
-            background: linear-gradient(135deg, #60a5fa, #a78bfa, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-            filter: drop-shadow(0 0 25px rgba(96, 165, 250, 0.7));
-            text-shadow: none;
-        }
-
-        .heart-names .name-and {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.7em;
-            margin: 0 6px;
-        }
-
-        .heart-names .name-fouzia {
-            background: linear-gradient(135deg, #f472b6, #ec4899, #ff6b9d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-            filter: drop-shadow(0 0 25px rgba(236, 72, 153, 0.7));
-            text-shadow: none;
-        }
-
-        .heart-forever {
-            font-family: 'Cinzel Decorative', cursive;
-            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
-            letter-spacing: 8px;
+            padding: 15px 40px;
+            border: none;
+            background: #ea80b0;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 15px rgba(234, 128, 176, 0.4);
             text-transform: uppercase;
-            text-align: center;
-            margin-top: 12px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1.2s ease 0.5s;
-            z-index: 320;
-            position: relative;
-            background: linear-gradient(90deg, #ffd700, #ff6b9d, #a855f7, #ffd700);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: forever-shimmer 4s linear infinite;
         }
 
-        .heart-forever.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .popup-btn:hover, .popup-btn:active {
+            background: #ff98c3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(234, 128, 176, 0.6);
         }
 
-        @keyframes forever-shimmer {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            100% {
-                background-position: 300% 50%;
-            }
+        /* Sparkle decorations on popup */
+        .sparkle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px #ff85b6;
+            animation: sparkle 2s ease-in-out infinite;
         }
 
-        /* Tiny floating hearts in the heart scene */
-        .scene-heart-particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: 305;
-            opacity: 0;
-            animation: scene-heart-rise linear forwards;
-        }
-
-        @keyframes scene-heart-rise {
-            0% {
-                opacity: 0;
-                transform: translateY(0) scale(0.5) rotate(0deg);
-            }
-
-            15% {
-                opacity: 0.8;
-            }
-
-            85% {
-                opacity: 0.4;
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateY(-100vh) scale(1.2) rotate(30deg);
-            }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.5); }
+            50%      { opacity: 1; transform: scale(1.5); }
         }
     </style>
 </head>
-
 <body>
 
-    <!-- Background Starfield + Shooting Stars -->
+    <!-- Starfield canvas -->
     <canvas id="starfield"></canvas>
 
-    <!-- Star counter -->
-    <div id="star-counter">⭐ 0 / 5 Stars</div>
+    <!-- Floating particles -->
+    <div id="particles"></div>
 
-    <!-- Main Application Container -->
-    <div id="app">
-
-        <!-- Intro State -->
-        <h1 id="main-title" class="title">Explore the stars to see why you shine ✨</h1>
-        <p id="subtitle" class="subtitle">— A sky full of stars, just for you, Fouzia —</p>
-
-        <div id="stars-container" class="star-container">
-            <!--
-                ★ 5 Interactive Stars ★
-                Each star has a data-id corresponding to the starMessages array index.
-                They are positioned via CSS classes (.star-1 to .star-5).
-                To add more stars: add a new div, new CSS class, and extend the array.
-            -->
-            <div class="interactive-star star-1" data-id="0">
-                <div class="star-shape"></div>
-                <div class="sparkle-ring"></div>
-            </div>
-            <div class="interactive-star star-2" data-id="1">
-                <div class="star-shape"></div>
-                <div class="sparkle-ring"></div>
-            </div>
-            <div class="interactive-star star-3" data-id="2">
-                <div class="star-shape"></div>
-                <div class="sparkle-ring"></div>
-            </div>
-            <div class="interactive-star star-4" data-id="3">
-                <div class="star-shape"></div>
-                <div class="sparkle-ring"></div>
-            </div>
-            <div class="interactive-star star-5" data-id="4">
-                <div class="star-shape"></div>
-                <div class="sparkle-ring"></div>
-            </div>
+    <!-- Responsive wrapper for heart to scale on mobile -->
+    <div id="heartWrapper">
+        <div class="heart-container">
+            <div id="ui"></div>
         </div>
-
-        <!-- Finale State (The Moon) -->
-        <div id="moon-container">
-            <div id="moon"></div>
-            <div id="moon-label">For you, my entire universe... Fouzia 💕</div>
-            <div class="moon-hint">tap the moon</div>
-        </div>
-
     </div>
 
-    <!-- Baby Checkien VFX Scene -->
-    <div id="chicken-scene">
-        <div class="egg-container">
-            <div class="egg" id="the-egg"></div>
-        </div>
-        <div class="baby-chicken" id="baby-chicken">
-            <div class="chick-body">
-                <div class="chick-head">
-                    <div class="chick-comb">
-                        <div class="comb-spike"></div>
-                        <div class="comb-spike"></div>
-                        <div class="comb-spike"></div>
-                    </div>
-                    <div class="chick-eye left"></div>
-                    <div class="chick-eye right"></div>
-                    <div class="chick-blush left"></div>
-                    <div class="chick-blush right"></div>
-                    <div class="chick-beak"></div>
-                </div>
-                <div class="chick-wing left"></div>
-                <div class="chick-wing right"></div>
+    <!-- ── Fouzia Popup ── -->
+    <div class="popup-overlay" id="popup">
+        <div class="popup-card" id="popupCard">
+            <div class="popup-hearts">💖✨💖</div>
+            <!-- Using solid color to fix invisible text bug on some mobile browsers -->
+            <div class="popup-name">Fouzia</div>
+            <div class="popup-subtitle">You are my everything</div>
+            <div class="popup-message">
+                Every beat of my heart whispers your name.<br>
+                This is for you. 💕
             </div>
-            <div class="chick-feet">
-                <div class="chick-foot"></div>
-                <div class="chick-foot"></div>
-            </div>
-        </div>
-        <div class="chicken-label" id="chicken-label">Baby Chicken 🐣</div>
-        <div class="chicken-sublabel" id="chicken-sublabel">~ chirp chirp ~ forever yours ~</div>
-    </div>
-
-    <!-- Heart Finale Scene -->
-    <div id="heart-scene">
-        <canvas id="heart-canvas"></canvas>
-        <div class="heart-names" id="heart-names">
-            <span class="name-malek">Malek</span>
-            <span class="name-and">&</span>
-            <span class="name-fouzia">Fouzia</span>
-        </div>
-        <div class="heart-forever" id="heart-forever">Forever ❤️</div>
-    </div>
-
-    <!-- Modal Template -->
-    <div id="modal-overlay">
-        <div class="modal" id="modal-content">
-            <span class="modal-star-icon" id="modal-icon">⭐</span>
-            <div id="modal-body">
-                <p id="modal-text"></p>
-            </div>
-            <button class="close-btn" id="modal-close-btn">Close</button>
+            <button class="popup-btn" id="popupBtn">See Your Heart</button>
         </div>
     </div>
 
     <script>
-        /* =================================================================
-         *  ★ CONFIGURATION — EDIT THESE TO PERSONALIZE ★
-         * ================================================================= */
-
-        // --- Messages shown when each star is clicked (one per star) ---
-        const starMessages = [
-            "Your smile, Fouzia, lights up my darkest nights more than any star ever could. 🌟",
-            "Your laughter is my favorite melody — a sound the universe itself envies. 🎶",
-            "The way you care for others shows how beautiful your heart truly is. 💖",
-            "Every moment spent with you feels like a wish upon a shooting star come true. 🌠",
-            "You inspire me to be better, simply by being the amazing person you are. ✨"
-        ];
-
-        // --- The final love letter shown when the moon is clicked ---
-        const finalLoveLetter = `
-            <strong style="font-family: 'Great Vibes', cursive; font-size: 1.8rem; 
-            background: linear-gradient(135deg, #ffd700, #ff6b9d); -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent;">My Dearest Fouzia,</strong><br><br>
-            You've collected every star in my sky, but the truth is —
-            none of them could ever shine as brightly as you do.<br><br>
-            You are my moon, my stars, and my entire galaxy.
-            Thank you for being the light that guides my heart home.<br><br>
-            Every day with you is Valentine's Day.<br><br>
-            <em style="color: #ff6b9d;">Forever & always yours ❤️</em>
-        `;
-
-        /* =================================================================
-         *  GAME STATE
-         * ================================================================= */
-        const collectedStars = new Set();
-        const totalStars = 5;
-        let isMoonRevealed = false;
-
-        /* =================================================================
-         *  DOM ELEMENTS
-         * ================================================================= */
-        const modalOverlay = document.getElementById('modal-overlay');
-        const modalText = document.getElementById('modal-text');
-        const modalIcon = document.getElementById('modal-icon');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
-        const starsContainer = document.getElementById('stars-container');
-        const mainTitle = document.getElementById('main-title');
-        const subtitle = document.getElementById('subtitle');
-        const moonContainer = document.getElementById('moon-container');
-        const moonElement = document.getElementById('moon');
-        const moonLabel = document.getElementById('moon-label');
-        const moonHint = document.querySelector('.moon-hint');
-        const interactiveStars = document.querySelectorAll('.interactive-star');
-        const starCounter = document.getElementById('star-counter');
-
-        /* =================================================================
-         *  MODAL SYSTEM
-         * ================================================================= */
-
-        function openModal(text, isFinal = false) {
-            modalText.innerHTML = text;
-            modalOverlay.classList.remove('hidden');
-            void modalOverlay.offsetWidth; // Force reflow
-            modalOverlay.classList.add('active');
-
-            const modal = document.querySelector('.modal');
-            if (isFinal) {
-                modal.classList.add('final-modal');
-                modalIcon.textContent = '🌙';
-            } else {
-                modal.classList.remove('final-modal');
-                modalIcon.textContent = '⭐';
+        // ══════════════════════════════════════
+        //   MOBILE SCALE LOGIC
+        // ══════════════════════════════════════
+        function updateScale() {
+            const wrapper = document.getElementById('heartWrapper');
+            const winWidth = window.innerWidth;
+            // Base width is 550. If screen is smaller, scale it down proportionally.
+            let scale = 1;
+            if (winWidth < 550) {
+                scale = (winWidth / 550) * 0.95; // 0.95 adds a little padding margin
             }
+            wrapper.style.transform = `scale(${scale})`;
+        }
+        window.addEventListener('resize', updateScale);
+        updateScale(); // Initial call
+
+        // ══════════════════════════════════════
+        //   POPUP LOGIC
+        // ══════════════════════════════════════
+        const popup = document.getElementById('popup');
+        const popupBtn = document.getElementById('popupBtn');
+        const popupCard = document.getElementById('popupCard');
+
+        // Add sparkles to popup card
+        for (let i = 0; i < 8; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.top = (10 + Math.random() * 80) + '%';
+            sparkle.style.left = (10 + Math.random() * 80) + '%';
+            sparkle.style.animationDelay = Math.random() * 2 + 's';
+            popupCard.appendChild(sparkle);
         }
 
-        function closeModal() {
-            modalOverlay.classList.remove('active');
-            setTimeout(() => {
-                modalOverlay.classList.add('hidden');
-                if (!isMoonRevealed) checkProgression();
-            }, 500);
-        }
+        // Show popup on load
+        setTimeout(() => popup.classList.add('show'), 300);
 
-        modalCloseBtn.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) closeModal();
+        popupBtn.addEventListener('click', () => {
+            popup.classList.remove('show');
+            // Burst heart emojis
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart-particle';
+                    heart.textContent = ['💖','💕','💗','❤️','💘','✨'][Math.floor(Math.random() * 6)];
+                    heart.style.left = (20 + Math.random() * 60) + 'vw';
+                    heart.style.top = (40 + Math.random() * 20) + 'vh';
+                    heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 50);
+            }
         });
 
-        /* =================================================================
-         *  STAR INTERACTION
-         * ================================================================= */
-
-        interactiveStars.forEach(star => {
-            star.addEventListener('click', function () {
-                const id = parseInt(this.getAttribute('data-id'));
-
-                if (!collectedStars.has(id)) {
-                    collectedStars.add(id);
-                    this.classList.add('collected');
-
-                    // Sparkle burst effect
-                    this.classList.add('just-clicked');
-                    setTimeout(() => this.classList.remove('just-clicked'), 600);
-
-                    // Update counter
-                    updateCounter();
-                }
-
-                openModal(starMessages[id]);
-            });
-        });
-
-        function updateCounter() {
-            const count = collectedStars.size;
-            starCounter.textContent = `⭐ ${count} / ${totalStars} Stars`;
-            if (count === totalStars) {
-                starCounter.classList.add('complete');
-                starCounter.textContent = `✨ All Stars Collected! ✨`;
-            }
-        }
-
-        /* =================================================================
-         *  PROGRESSION & MOON REVEAL
-         * ================================================================= */
-
-        function checkProgression() {
-            if (collectedStars.size === totalStars) {
-                revealMoon();
-            }
-        }
-
-        function revealMoon() {
-            isMoonRevealed = true;
-
-            // Fade out intro
-            mainTitle.style.opacity = '0';
-            subtitle.style.opacity = '0';
-            starsContainer.style.opacity = '0';
-
-            // Hide counter
-            starCounter.style.opacity = '0';
-
-            setTimeout(() => {
-                mainTitle.style.display = 'none';
-                subtitle.style.display = 'none';
-                starsContainer.style.display = 'none';
-                starCounter.style.display = 'none';
-
-                // Reveal moon
-                moonContainer.style.pointerEvents = 'auto';
-                moonContainer.style.opacity = '1';
-
-                setTimeout(() => {
-                    moonLabel.style.opacity = '1';
-                    moonHint.style.opacity = '1';
-                }, 600);
-            }, 1500);
-        }
-
-        let chickenSceneTriggered = false;
-
-        moonElement.addEventListener('click', () => {
-            openModal(finalLoveLetter, true);
-        });
-
-        /* =================================================================
-         *  BABY CHECKIEN VFX — Hatching Egg + Chicken Reveal
-         * ================================================================= */
-
-        const chickenScene = document.getElementById('chicken-scene');
-        const theEgg = document.getElementById('the-egg');
-        const babyChicken = document.getElementById('baby-chicken');
-        const chickenLabel = document.getElementById('chicken-label');
-        const chickenSublabel = document.getElementById('chicken-sublabel');
-
-        // Override closeModal to trigger chicken scene after final letter
-        const originalCloseModal = closeModal;
-        closeModal = function () {
-            const wasFinal = document.querySelector('.modal').classList.contains('final-modal');
-            originalCloseModal();
-            if (wasFinal && !chickenSceneTriggered) {
-                chickenSceneTriggered = true;
-                setTimeout(startChickenScene, 1200);
-            }
-        };
-        // Re-bind event listeners with new closeModal
-        modalCloseBtn.removeEventListener('click', originalCloseModal);
-        modalCloseBtn.addEventListener('click', closeModal);
-
-        function startChickenScene() {
-            // Fade out moon
-            moonContainer.style.opacity = '0';
-            moonContainer.style.pointerEvents = 'none';
-
-            setTimeout(() => {
-                moonContainer.style.display = 'none';
-
-                // Show chicken scene with egg
-                chickenScene.classList.add('active');
-
-                // Wobble the egg for 2 seconds, then crack
-                setTimeout(() => {
-                    theEgg.classList.add('cracking');
-
-                    // After crack animation, hatch!
-                    setTimeout(() => {
-                        hatchEgg();
-                    }, 900);
-                }, 2000);
-            }, 1500);
-        }
-
-        function hatchEgg() {
-            // Hide egg
-            theEgg.classList.add('hatched');
-
-            // Spawn shell fragments
-            spawnShellFragments();
-
-            // Spawn confetti burst
-            spawnConfettiBurst();
-
-            setTimeout(() => {
-                theEgg.style.display = 'none';
-
-                // Reveal the baby chicken!
-                babyChicken.classList.add('revealed');
-
-                // Show label
-                chickenLabel.classList.add('visible');
-                chickenSublabel.classList.add('visible');
-
-                // Start sparkle particles around chicken
-                startChickenSparkles();
-
-                // Start floating feathers
-                startFeathers();
-
-                // Auto-transition to heart scene after 6 seconds
-                setTimeout(() => {
-                    startHeartScene();
-                }, 6000);
-            }, 500);
-        }
-
-        function spawnShellFragments() {
-            const eggRect = theEgg.getBoundingClientRect();
-            const cx = eggRect.left + eggRect.width / 2;
-            const cy = eggRect.top + eggRect.height / 2;
-
-            for (let i = 0; i < 12; i++) {
-                const frag = document.createElement('div');
-                frag.classList.add('shell-fragment');
-                const angle = (Math.PI * 2 / 12) * i;
-                const dist = 60 + Math.random() * 80;
-                frag.style.cssText = `
-                    position: fixed;
-                    left: ${cx}px;
-                    top: ${cy}px;
-                    --tx: ${Math.cos(angle) * dist}px;
-                    --ty: ${Math.sin(angle) * dist - 40}px;
-                    --rot: ${Math.random() * 720 - 360}deg;
-                    z-index: 220;
-                    width: ${12 + Math.random() * 15}px;
-                    height: ${15 + Math.random() * 18}px;
-                `;
-                document.body.appendChild(frag);
-                requestAnimationFrame(() => frag.classList.add('burst'));
-                setTimeout(() => frag.remove(), 1200);
-            }
-        }
-
-        function spawnConfettiBurst() {
-            const colors = ['#ffd700', '#ff6b9d', '#a855f7', '#ffee58', '#ff8a80', '#69f0ae', '#40c4ff'];
-
-            for (let i = 0; i < 40; i++) {
-                const conf = document.createElement('div');
-                conf.classList.add('confetti');
-                const angle = Math.random() * Math.PI * 2;
-                const dist = 100 + Math.random() * 200;
-                conf.style.cssText = `
-                    left: 50%;
-                    top: 45%;
-                    background: ${colors[Math.floor(Math.random() * colors.length)]};
-                    border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
-                    width: ${4 + Math.random() * 8}px;
-                    height: ${4 + Math.random() * 8}px;
-                    --cx: ${Math.cos(angle) * dist}px;
-                    --cy: ${Math.sin(angle) * dist}px;
-                    --crot: ${Math.random() * 1080}deg;
-                    animation-delay: ${Math.random() * 0.3}s;
-                `;
-                document.body.appendChild(conf);
-                requestAnimationFrame(() => conf.classList.add('burst'));
-                setTimeout(() => conf.remove(), 2500);
-            }
-        }
-
-        function startChickenSparkles() {
-            const sparkleColors = ['#ffd700', '#fff176', '#ffee58', '#ff6b9d', '#ffffff'];
-
-            setInterval(() => {
-                if (!chickenScene.classList.contains('active')) return;
-
-                const sparkle = document.createElement('div');
-                sparkle.classList.add('chick-sparkle');
-                const angle = Math.random() * Math.PI * 2;
-                const dx = Math.cos(angle) * (40 + Math.random() * 60);
-                const dy = Math.sin(angle) * (40 + Math.random() * 60);
-                sparkle.style.cssText = `
-                    left: calc(50% + ${(Math.random() - 0.5) * 80}px);
-                    top: calc(45% + ${(Math.random() - 0.5) * 60}px);
-                    background: ${sparkleColors[Math.floor(Math.random() * sparkleColors.length)]};
-                    --dx: ${dx}px;
-                    --dy: ${dy}px;
-                    animation-duration: ${1.5 + Math.random() * 1.5}s;
-                    box-shadow: 0 0 6px currentColor;
-                `;
-                chickenScene.appendChild(sparkle);
-                setTimeout(() => sparkle.remove(), 3000);
-            }, 200);
-        }
-
-        function startFeathers() {
-            const featherEmojis = ['🪶', '✨', '💛'];
-
-            setInterval(() => {
-                if (!chickenScene.classList.contains('active')) return;
-
-                const feather = document.createElement('div');
-                feather.classList.add('feather');
-                feather.textContent = featherEmojis[Math.floor(Math.random() * featherEmojis.length)];
-                feather.style.left = Math.random() * 100 + '%';
-                feather.style.fontSize = (0.8 + Math.random() * 0.8) + 'rem';
-                feather.style.animationDuration = (6 + Math.random() * 6) + 's';
-                feather.style.animationDelay = (Math.random() * 2) + 's';
-                document.body.appendChild(feather);
-                setTimeout(() => feather.remove(), 14000);
-            }, 800);
-        }
-
-        /* =================================================================
-         *  CANVAS STARFIELD — Twinkling stars + Shooting stars
-         * ================================================================= */
-
+        // ══════════════════════════════════════
+        //   STARFIELD BACKGROUND
+        // ══════════════════════════════════════
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
-        let bgStars = [];
-        let shootingStars = [];
-        // Use fewer stars on mobile for better performance
-        const isMobile = window.innerWidth <= 600;
-        const NUM_BG_STARS = isMobile ? 200 : 500;
+        let stars = [];
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            createStars(Math.floor(window.innerWidth / 5)); // Adjust stars by screen width
         }
+
+        function createStars(count) {
+            stars = [];
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 1.5 + 0.5,
+                    alpha: Math.random(),
+                    da: (Math.random() - 0.5) * 0.02,
+                    color: Math.random() > 0.6 ? `234,128,176` : `255,255,255`
+                });
+            }
+        }
+        
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        /* --- Background Star --- */
-        class BgStar {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.3;
-                this.speedX = (Math.random() - 0.5) * 0.12;
-                this.speedY = (Math.random() - 0.5) * 0.12;
-                this.brightness = Math.random();
-                this.twinkleSpeed = Math.random() * 0.015 + 0.003;
-                this.dir = 1;
-                // Some stars have a warm/cool tint
-                const hue = Math.random() > 0.7 ? (Math.random() > 0.5 ? 40 : 220) : 0;
-                const sat = hue === 0 ? 0 : 30 + Math.random() * 40;
-                this.color = `hsl(${hue}, ${sat}%, 95%)`;
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
-
-                this.brightness += this.twinkleSpeed * this.dir;
-                if (this.brightness >= 1) { this.brightness = 1; this.dir = -1; }
-                else if (this.brightness <= 0.15) { this.brightness = 0.15; this.dir = 1; }
-            }
-
-            draw() {
-                ctx.globalAlpha = this.brightness;
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-
-                // Draw as tiny 4-point star for larger ones, circle for small
-                if (this.size > 1.5) {
-                    this.drawStarShape(this.x, this.y, 4, this.size, this.size * 0.4);
-                } else {
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                }
-                ctx.fill();
-                ctx.globalAlpha = 1;
-            }
-
-            drawStarShape(cx, cy, spikes, outerR, innerR) {
-                let rot = Math.PI / 2 * 3;
-                const step = Math.PI / spikes;
-                ctx.moveTo(cx, cy - outerR);
-                for (let i = 0; i < spikes; i++) {
-                    ctx.lineTo(cx + Math.cos(rot) * outerR, cy + Math.sin(rot) * outerR);
-                    rot += step;
-                    ctx.lineTo(cx + Math.cos(rot) * innerR, cy + Math.sin(rot) * innerR);
-                    rot += step;
-                }
-                ctx.lineTo(cx, cy - outerR);
-                ctx.closePath();
-            }
-        }
-
-        /* --- Shooting Star --- */
-        class ShootingStar {
-            constructor() {
-                this.reset();
-            }
-
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height * 0.5;
-                this.len = Math.random() * 80 + 40;
-                this.speed = Math.random() * 6 + 4;
-                this.angle = (Math.PI / 4) + (Math.random() * 0.3 - 0.15);
-                this.opacity = 1;
-                this.active = false;
-                this.timer = Math.random() * 600 + 200; // frames until next appearance
-            }
-
-            update() {
-                if (!this.active) {
-                    this.timer--;
-                    if (this.timer <= 0) this.active = true;
-                    return;
-                }
-
-                this.x += Math.cos(this.angle) * this.speed;
-                this.y += Math.sin(this.angle) * this.speed;
-                this.opacity -= 0.012;
-
-                if (this.opacity <= 0 || this.x > canvas.width + 50 || this.y > canvas.height + 50) {
-                    this.reset();
-                }
-            }
-
-            draw() {
-                if (!this.active) return;
-
-                const tailX = this.x - Math.cos(this.angle) * this.len;
-                const tailY = this.y - Math.sin(this.angle) * this.len;
-
-                const grad = ctx.createLinearGradient(tailX, tailY, this.x, this.y);
-                grad.addColorStop(0, `rgba(255, 255, 255, 0)`);
-                grad.addColorStop(1, `rgba(255, 255, 255, ${this.opacity})`);
-
-                ctx.strokeStyle = grad;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(tailX, tailY);
-                ctx.lineTo(this.x, this.y);
-                ctx.stroke();
-
-                // Bright head
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initStarfield() {
-            bgStars = [];
-            for (let i = 0; i < NUM_BG_STARS; i++) bgStars.push(new BgStar());
-            shootingStars = [];
-            for (let i = 0; i < 3; i++) shootingStars.push(new ShootingStar());
-        }
-
-        function animateStarfield() {
+        function drawStars() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (const s of bgStars) { s.update(); s.draw(); }
-            for (const s of shootingStars) { s.update(); s.draw(); }
-            requestAnimationFrame(animateStarfield);
+            stars.forEach(s => {
+                s.alpha += s.da;
+                if (s.alpha <= 0.1 || s.alpha >= 1) s.da *= -1;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0.05, s.alpha).toFixed(2)})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+
+        // ══════════════════════════════════════
+        //   HEART GENERATION
+        // ══════════════════════════════════════
+        const ui = document.getElementById('ui');
+        // Reduced variations to make the design cleaner and highly readable
+        const phrases = ['I Love You', 'Fouzia', 'I love you', 'Fouzia ♡'];
+
+        function heartX(t) { return 16 * Math.pow(Math.sin(t), 3); }
+        function heartY(t) { return -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)); }
+
+        function createWord(x, y, angle, index, phrase, size, duration) {
+            const span = document.createElement('span');
+            span.className = 'love_word love_horizontal';
+            span.textContent = phrase;
+            span.style.left = x + 'px';
+            span.style.top = y + 'px';
+            span.style.setProperty('--i', index);
+            span.style.setProperty('--rot', angle + 'deg');
+            span.style.setProperty('--dur', duration + 's');
+            span.style.fontSize = size + 'rem';
+            ui.appendChild(span);
         }
 
-        initStarfield();
-        animateStarfield();
+        const centerX = 260, centerY = 240;
 
-        /* =================================================================
-         *  FLOATING HEART PARTICLES
-         * ================================================================= */
+        // Optimized layers for readability (fewer overlapping words)
+        const layers = [
+            { scale: 14, count: 70, size: 1.15 }, // Outer main ring
+            { scale: 11, count: 50, size: 1.05 }, // Mid ring
+            { scale: 8,  count: 35, size: 0.95 },  // Inner ring
+            { scale: 5,  count: 20, size: 0.85 },  // Core
+            { scale: 2.5, count: 8, size: 0.80 }   // Center
+        ];
 
-        function createHeartParticle() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart-particle');
-            heart.textContent = Math.random() > 0.5 ? '💕' : '✨';
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.fontSize = (Math.random() * 0.8 + 0.6) + 'rem';
-            heart.style.animationDuration = (Math.random() * 10 + 12) + 's';
-            heart.style.animationDelay = (Math.random() * 5) + 's';
-            document.body.appendChild(heart);
+        let globalIdx = 0;
+        layers.forEach((layer, layerIndex) => {
+            for (let i = 0; i < layer.count; i++) {
+                const t = (i / layer.count) * 2 * Math.PI;
+                const x = heartX(t) * layer.scale + centerX;
+                const y = heartY(t) * layer.scale + centerY;
+                
+                // Calculate curve tangent for rotation
+                const dt = 0.01;
+                const angle = Math.atan2(heartY(t+dt)-heartY(t), heartX(t+dt)-heartX(t)) * (180/Math.PI);
+                
+                // Choose text (prioritize 'Fouzia' and 'I Love You')
+                const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+                
+                // Slightly randomize size and animation duration for organic feel
+                const finalSize = layer.size * (0.9 + Math.random() * 0.2);
+                const duration = 6 + Math.random() * 4;
 
-            // Remove after animation
-            setTimeout(() => heart.remove(), 22000);
-        }
-
-        // Spawn hearts periodically — less often on mobile for performance
-        const heartInterval = isMobile ? 5000 : 3000;
-        const initialHearts = isMobile ? 3 : 5;
-        setInterval(createHeartParticle, heartInterval);
-        // Spawn a few immediately
-        for (let i = 0; i < initialHearts; i++) setTimeout(createHeartParticle, i * 600);
-
-        /* =================================================================
-         *  HEART FINALE — Animated heart drawing with names
-         * ================================================================= */
-
-        const heartScene = document.getElementById('heart-scene');
-        const heartCanvas = document.getElementById('heart-canvas');
-        const heartCtx = heartCanvas.getContext('2d');
-        const heartNamesEl = document.getElementById('heart-names');
-        const heartForeverEl = document.getElementById('heart-forever');
-        let heartSceneStarted = false;
-
-        function startHeartScene() {
-            if (heartSceneStarted) return;
-            heartSceneStarted = true;
-
-            // Fade out chicken scene
-            chickenScene.style.opacity = '0';
-            chickenScene.style.transition = 'opacity 1.5s ease';
-
-            setTimeout(() => {
-                chickenScene.classList.remove('active');
-                chickenScene.style.display = 'none';
-
-                // Size the heart canvas
-                const size = Math.min(window.innerWidth * 0.8, window.innerHeight * 0.45, 400);
-                heartCanvas.width = size;
-                heartCanvas.height = size;
-
-                // Show heart scene
-                heartScene.classList.add('active');
-
-                // Start floating heart particles
-                startHeartSceneParticles();
-
-                // Animate the heart drawing
-                setTimeout(() => {
-                    animateHeartDraw(size);
-                }, 800);
-            }, 1800);
-        }
-
-        function animateHeartDraw(size) {
-            const cx = size / 2;
-            const cy = size / 2;
-            const scale = size / 320;
-
-            // Generate heart points using parametric equation
-            const points = [];
-            const totalPoints = 300;
-            for (let i = 0; i <= totalPoints; i++) {
-                const t = (i / totalPoints) * Math.PI * 2;
-                const x = 16 * Math.pow(Math.sin(t), 3);
-                const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
-                points.push({
-                    x: cx + x * scale * 8,
-                    y: cy + y * scale * 8 - 10 * scale
-                });
+                createWord(x, y, angle, globalIdx++, phrase, finalSize, duration);
             }
+        });
 
-            let currentPoint = 0;
-            const speed = 1; // points per frame — slow romantic draw
-
-            function drawFrame() {
-                // Clear and redraw
-                heartCtx.clearRect(0, 0, size, size);
-
-                // Outer glow
-                heartCtx.shadowColor = '#ff2d75';
-                heartCtx.shadowBlur = 25;
-                heartCtx.strokeStyle = '#ff2d75';
-                heartCtx.lineWidth = 3.5 * scale;
-                heartCtx.lineCap = 'round';
-                heartCtx.lineJoin = 'round';
-
-                // Draw path up to current point
-                heartCtx.beginPath();
-                heartCtx.moveTo(points[0].x, points[0].y);
-                for (let i = 1; i <= currentPoint; i++) {
-                    heartCtx.lineTo(points[i].x, points[i].y);
-                }
-                heartCtx.stroke();
-
-                // Inner brighter line
-                heartCtx.shadowColor = '#ff6b9d';
-                heartCtx.shadowBlur = 10;
-                heartCtx.strokeStyle = 'rgba(255, 150, 200, 0.8)';
-                heartCtx.lineWidth = 1.5 * scale;
-                heartCtx.beginPath();
-                heartCtx.moveTo(points[0].x, points[0].y);
-                for (let i = 1; i <= currentPoint; i++) {
-                    heartCtx.lineTo(points[i].x, points[i].y);
-                }
-                heartCtx.stroke();
-                heartCtx.shadowBlur = 0;
-
-                // Sparkle at the tip of the drawing
-                if (currentPoint < points.length) {
-                    const tip = points[currentPoint];
-                    heartCtx.fillStyle = '#fff';
-                    heartCtx.shadowColor = '#fff';
-                    heartCtx.shadowBlur = 15;
-                    heartCtx.beginPath();
-                    heartCtx.arc(tip.x, tip.y, 4 * scale, 0, Math.PI * 2);
-                    heartCtx.fill();
-                    heartCtx.shadowBlur = 0;
-                }
-
-                currentPoint += speed;
-
-                if (currentPoint < points.length) {
-                    requestAnimationFrame(drawFrame);
-                } else {
-                    // Heart complete — fill with gradient glow
-                    fillHeartGlow(points, size);
-                    // Reveal names
-                    setTimeout(() => {
-                        heartNamesEl.classList.add('visible');
-                        setTimeout(() => {
-                            heartForeverEl.classList.add('visible');
-                        }, 800);
-                    }, 600);
-                }
-            }
-
-            drawFrame();
+        // ══════════════════════════════════════
+        //   FLOATING PARTICLES
+        // ══════════════════════════════════════
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = Math.floor(window.innerWidth / 15); // Scale amount for mobile
+        for (let i = 0; i < Math.min(particleCount, 30); i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = (8 + Math.random() * 10) + 's';
+            p.style.animationDelay = Math.random() * 10 + 's';
+            const size = (3 + Math.random() * 3) + 'px';
+            p.style.width = size;
+            p.style.height = size;
+            
+            p.style.background = Math.random() > 0.5 
+                ? `rgba(234,128,176,${0.6 + Math.random()*0.4})` 
+                : `rgba(255,255,255,${0.5 + Math.random()*0.3})`;
+            p.style.boxShadow = `0 0 ${5 + Math.random()*5}px ${p.style.background}`;
+            particlesContainer.appendChild(p);
         }
-
-        function fillHeartGlow(points, size) {
-            const cx = size / 2;
-            const cy = size / 2;
-
-            // Soft radial fill inside the heart
-            const grad = heartCtx.createRadialGradient(cx, cy - 10, 10, cx, cy, size * 0.45);
-            grad.addColorStop(0, 'rgba(255, 60, 120, 0.35)');
-            grad.addColorStop(0.5, 'rgba(255, 40, 100, 0.15)');
-            grad.addColorStop(1, 'rgba(255, 20, 80, 0)');
-
-            heartCtx.fillStyle = grad;
-            heartCtx.beginPath();
-            heartCtx.moveTo(points[0].x, points[0].y);
-            for (let i = 1; i < points.length; i++) {
-                heartCtx.lineTo(points[i].x, points[i].y);
-            }
-            heartCtx.closePath();
-            heartCtx.fill();
-
-            // Pulsing glow animation on the heart outline
-            let glowPhase = 0;
-            function pulseGlow() {
-                glowPhase += 0.03;
-                const glow = 15 + Math.sin(glowPhase) * 12;
-
-                heartCtx.clearRect(0, 0, size, size);
-
-                // Fill
-                heartCtx.fillStyle = grad;
-                heartCtx.beginPath();
-                heartCtx.moveTo(points[0].x, points[0].y);
-                for (let i = 1; i < points.length; i++) {
-                    heartCtx.lineTo(points[i].x, points[i].y);
-                }
-                heartCtx.closePath();
-                heartCtx.fill();
-
-                // Outer stroke
-                heartCtx.shadowColor = '#ff2d75';
-                heartCtx.shadowBlur = glow;
-                heartCtx.strokeStyle = '#ff2d75';
-                heartCtx.lineWidth = 3.5 * (size / 320);
-                heartCtx.lineCap = 'round';
-                heartCtx.lineJoin = 'round';
-                heartCtx.beginPath();
-                heartCtx.moveTo(points[0].x, points[0].y);
-                for (let i = 1; i < points.length; i++) {
-                    heartCtx.lineTo(points[i].x, points[i].y);
-                }
-                heartCtx.stroke();
-
-                // Inner stroke
-                heartCtx.shadowColor = '#ff6b9d';
-                heartCtx.shadowBlur = glow * 0.5;
-                heartCtx.strokeStyle = 'rgba(255, 150, 200, 0.8)';
-                heartCtx.lineWidth = 1.5 * (size / 320);
-                heartCtx.beginPath();
-                heartCtx.moveTo(points[0].x, points[0].y);
-                for (let i = 1; i < points.length; i++) {
-                    heartCtx.lineTo(points[i].x, points[i].y);
-                }
-                heartCtx.stroke();
-                heartCtx.shadowBlur = 0;
-
-                requestAnimationFrame(pulseGlow);
-            }
-            pulseGlow();
-        }
-
-        function startHeartSceneParticles() {
-            const heartEmojis = ['💖', '💕', '❤️', '💗', '✨', '💘', '🌹'];
-            setInterval(() => {
-                if (!heartScene.classList.contains('active')) return;
-
-                const p = document.createElement('div');
-                p.classList.add('scene-heart-particle');
-                p.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                p.style.left = Math.random() * 100 + '%';
-                p.style.bottom = '-30px';
-                p.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
-                p.style.animationDuration = (6 + Math.random() * 8) + 's';
-                p.style.animationDelay = (Math.random() * 1) + 's';
-                document.body.appendChild(p);
-                setTimeout(() => p.remove(), 16000);
-            }, 500);
-        }
-
     </script>
 </body>
-
 </html>
