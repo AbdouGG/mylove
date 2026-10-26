@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#130716" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Happy Birthday Fouzia ✨ كل عام وأنتِ بخير يا فوزية</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,18 +31,25 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
-      -webkit-user-select: none;
     }
 
-    html, body {
+    html {
       width: 100%;
-      min-height: 100dvh;
+      scroll-behavior: smooth;
+      overflow-y: auto;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
       overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
       background: radial-gradient(circle at 50% 18%, var(--bg-glow) 0%, var(--bg-mid) 45%, var(--bg-deep) 100%);
+      background-attachment: fixed;
       color: var(--cream);
       font-family: var(--font-en-sans);
-      overscroll-behavior-y: none;
     }
 
     /* Background Canvas for Stars, Fireworks, Floating Hearts & Lanterns */
@@ -101,7 +106,7 @@
     }
     .top-badge, .icon-btn {
       pointer-events: auto;
-      background: rgba(25, 8, 32, 0.72);
+      background: rgba(25, 8, 32, 0.78);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--glass-border);
@@ -118,7 +123,6 @@
     }
     .icon-btn {
       cursor: pointer;
-      padding: 8px 14px;
     }
     .icon-btn:active {
       transform: scale(0.92);
@@ -148,17 +152,17 @@
       100% { height: 12px; }
     }
 
-    /* Main App Container */
+    /* Main Scrollable Container */
     .app-wrapper {
       position: relative;
       z-index: 10;
       max-width: 480px;
       margin: 0 auto;
-      min-height: 100dvh;
-      padding: calc(64px + env(safe-area-inset-top)) 16px calc(36px + env(safe-area-inset-bottom));
+      padding: calc(68px + env(safe-area-inset-top)) 16px calc(48px + env(safe-area-inset-bottom));
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      align-items: center;
+      gap: 24px;
     }
 
     .ar {
@@ -167,23 +171,7 @@
       line-height: 1.65;
     }
 
-    /* Screens */
-    .screen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      animation: screenFadeIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .screen.active {
-      display: flex;
-    }
-    @keyframes screenFadeIn {
-      from { opacity: 0; transform: translateY(20px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* ================= SCREEN 1: UNLOCK SURPRISE ================= */
+    /* ================= HERO WELCOME CARD ================= */
     .lock-card {
       width: 100%;
       background: linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
@@ -191,14 +179,15 @@
       -webkit-backdrop-filter: blur(18px);
       border: 1px solid var(--glass-border);
       border-radius: 30px;
-      padding: 34px 22px;
+      padding: 30px 20px 26px;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+      text-align: center;
       position: relative;
       overflow: hidden;
     }
     .crown-icon {
       font-size: 2.5rem;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: inline-block;
       filter: drop-shadow(0 0 14px rgba(255, 209, 102, 0.6));
       animation: gentleBob 2.6s ease-in-out infinite;
@@ -214,45 +203,44 @@
       background: rgba(255, 93, 143, 0.2);
       border: 1px solid rgba(255, 158, 187, 0.35);
       color: var(--rose-soft);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .hero-title {
       font-family: var(--font-en-serif);
-      font-size: clamp(2.1rem, 8vw, 2.75rem);
+      font-size: clamp(2rem, 7.5vw, 2.65rem);
       line-height: 1.15;
       background: linear-gradient(135deg, #ffffff 0%, #ffc2d4 50%, #ffd166 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .hero-ar {
       font-family: var(--font-ar);
-      font-size: 1.25rem;
+      font-size: 1.22rem;
       font-weight: 700;
       color: var(--gold);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
     .hero-desc {
-      font-size: 0.94rem;
-      color: rgba(255, 246, 249, 0.82);
+      font-size: 0.93rem;
+      color: rgba(255, 246, 249, 0.85);
       line-height: 1.55;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
-    /* Touch & Hold Scanner */
+    /* Interactive Heart Button (Scrolls smoothly & triggers celebration) */
     .scanner-wrap {
       position: relative;
-      width: 136px;
-      height: 136px;
-      margin: 24px auto 16px;
+      width: 124px;
+      height: 124px;
+      margin: 18px auto 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      touch-action: none;
     }
     .scanner-ring-svg {
       position: absolute;
@@ -264,7 +252,7 @@
     }
     .scanner-ring-bg {
       fill: none;
-      stroke: rgba(255, 255, 255, 0.12);
+      stroke: rgba(255, 255, 255, 0.14);
       stroke-width: 6;
     }
     .scanner-ring-progress {
@@ -272,13 +260,12 @@
       stroke: url(#gradRoseGold);
       stroke-width: 6;
       stroke-linecap: round;
-      stroke-dasharray: 377;
-      stroke-dashoffset: 377;
-      transition: stroke-dashoffset 0.08s linear;
+      stroke-dasharray: 340;
+      stroke-dashoffset: 0;
     }
     .heart-hold-btn {
-      width: 102px;
-      height: 102px;
+      width: 94px;
+      height: 94px;
       border-radius: 50%;
       border: 1px solid rgba(255, 158, 187, 0.45);
       background: radial-gradient(circle at 30% 30%, #ff7aa2, #d92b6b);
@@ -290,7 +277,7 @@
       cursor: pointer;
       position: relative;
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
-      touch-action: none;
+      touch-action: manipulation;
     }
     .heart-hold-btn::before {
       content: '';
@@ -305,12 +292,11 @@
       0% { transform: scale(0.9); opacity: 0.9; }
       100% { transform: scale(1.3); opacity: 0; }
     }
-    .heart-hold-btn.pressing {
-      transform: scale(0.92);
-      box-shadow: 0 0 45px rgba(255, 209, 102, 0.85), inset 0 2px 8px rgba(255, 255, 255, 0.65);
+    .heart-hold-btn:active {
+      transform: scale(0.91);
     }
     .heart-hold-btn .heart-emoji {
-      font-size: 2.3rem;
+      font-size: 2.2rem;
       line-height: 1;
       filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25));
     }
@@ -318,23 +304,47 @@
       font-size: 0.86rem;
       color: var(--rose-soft);
       font-weight: 600;
-      margin-top: 4px;
     }
     .scanner-hint-ar {
       font-family: var(--font-ar);
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       color: var(--gold);
       margin-top: 2px;
     }
 
-    /* ================= SCREEN 2: INTERACTIVE CAKE STAGE ================= */
+    .scroll-down-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: rgba(255, 209, 102, 0.14);
+      border: 1px solid rgba(255, 209, 102, 0.4);
+      color: var(--gold);
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-decoration: none;
+      animation: bounceDown 1.8s ease-in-out infinite;
+    }
+    @keyframes bounceDown {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(5px); }
+    }
+
+    /* ================= INTERACTIVE CAKE SECTION ================= */
+    .cake-section-wrapper {
+      width: 100%;
+      text-align: center;
+      scroll-margin-top: 72px;
+    }
     .stage-header {
       margin-bottom: 10px;
       width: 100%;
     }
     .stage-title {
       font-family: var(--font-en-serif);
-      font-size: clamp(1.75rem, 6.5vw, 2.2rem);
+      font-size: clamp(1.7rem, 6.2vw, 2.15rem);
       background: linear-gradient(90deg, #fff, #ffc2d4, #ffd166);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -403,17 +413,17 @@
       margin-bottom: 8px;
     }
 
-    /* Cake Visual Container */
+    /* Cake Visual Container - allows vertical page scroll! */
     .cake-scene {
       position: relative;
-      width: 290px;
-      height: 270px;
+      width: 286px;
+      height: 266px;
       margin: 0 auto;
       display: flex;
-       flex-direction: column;
+      flex-direction: column;
       align-items: center;
       justify-content: flex-end;
-      touch-action: none;
+      touch-action: pan-y;
     }
 
     /* Glow behind cake when candles lit */
@@ -440,6 +450,7 @@
       gap: 20px;
       margin-bottom: -8px;
       padding: 0 10px;
+      touch-action: pan-y;
     }
     .candle-unit {
       position: relative;
@@ -449,7 +460,7 @@
       cursor: pointer;
       padding: 16px 6px 0;
       margin: -16px -6px 0;
-      /* Larger touch target for mobile fingers */
+      touch-action: manipulation;
     }
     .candle-unit:nth-child(1), .candle-unit:nth-child(5) {
       transform: translateY(8px);
@@ -568,7 +579,6 @@
       align-items: center;
       justify-content: center;
     }
-    /* Cream Frosting Drips Top */
     .frosting-drip-row {
       position: absolute;
       top: 0;
@@ -590,7 +600,6 @@
       background-size: 26px 14px;
     }
 
-    /* strawberries on top */
     .berries-row {
       position: absolute;
       top: -9px;
@@ -608,7 +617,6 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
-    /* Name Plaque on Cake */
     .cake-name-plaque {
       position: relative;
       z-index: 5;
@@ -641,7 +649,6 @@
       justify-content: center;
       overflow: hidden;
     }
-    /* Gold pearl belt */
     .pearl-row {
       width: 100%;
       height: 12px;
@@ -651,11 +658,10 @@
       filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
     }
 
-    /* Golden Cake Stand / Plate */
     .cake-plate {
       position: relative;
       z-index: 2;
-      width: 280px;
+      width: 276px;
       height: 16px;
       margin-top: -3px;
       background: linear-gradient(90deg, #b8860b, #ffd166, #fff3b0, #ffd166, #b8860b);
@@ -663,7 +669,6 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.65);
     }
 
-    /* Cake Slice Cut Animation Overlay */
     .cake-scene.sliced .cake-tier-top,
     .cake-scene.sliced .cake-tier-bottom {
       animation: cakePopBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -727,6 +732,7 @@
       justify-content: center;
       gap: 8px;
       transition: transform 0.18s ease, box-shadow 0.2s ease, opacity 0.2s;
+      touch-action: manipulation;
     }
     .btn:active {
       transform: scale(0.94);
@@ -747,13 +753,12 @@
       box-shadow: 0 8px 25px rgba(255, 183, 3, 0.45);
     }
 
-    /* ================= CELEBRATION & INTERACTIVE SECTIONS BELOW CAKE ================= */
+    /* ================= INTERACTIVE SECTIONS BELOW CAKE ================= */
     .surprise-sections {
       width: 100%;
-      margin-top: 22px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 22px;
     }
 
     .glass-section {
@@ -1015,7 +1020,7 @@
       width: 100%;
       height: 100%;
       cursor: pointer;
-      touch-action: none;
+      touch-action: pan-y;
       transition: opacity 0.5s ease;
     }
 
@@ -1028,9 +1033,9 @@
     }
 
     .footer-note {
-      margin-top: 28px;
-      font-size: 0.82rem;
-      color: rgba(255, 255, 255, 0.55);
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.65);
       text-align: center;
     }
   </style>
@@ -1070,36 +1075,37 @@
 
   <main class="app-wrapper">
 
-    <!-- ================= SCREEN 1: TOUCH & HOLD UNLOCK ================= -->
-    <section class="screen active" id="screen-unlock">
-      <div class="lock-card">
-        <div class="crown-icon">👑</div>
-        <div><span class="subtitle-pill">Special Birthday Surprise</span></div>
-        <h1 class="hero-title">For My Beloved Fouzia</h1>
-        <p class="hero-ar">مفاجأة خاصة لعيد ميلادكِ يا فوزية ✨</p>
-        <p class="hero-desc">
-          Today the universe celebrates the most beautiful soul in my life.<br/>
-          <span class="ar" style="color: var(--rose-soft); font-size: 0.96rem;">اليوم يحتفل العالم بأجمل وأحنّ قلب في حياتي.</span>
-        </p>
+    <!-- ================= 1. HERO WELCOME CARD ================= -->
+    <section class="lock-card" id="hero-card">
+      <div class="crown-icon">👑</div>
+      <div><span class="subtitle-pill">Special Birthday Surprise</span></div>
+      <h1 class="hero-title">For My Beloved Fouzia</h1>
+      <p class="hero-ar">كل عام وأنتِ أجمل أقداري يا فوزية ✨</p>
+      <p class="hero-desc">
+        Today the universe celebrates the most beautiful soul in my life.<br/>
+        <span class="ar" style="color: var(--rose-soft); font-size: 0.96rem;">اليوم يحتفل العالم بأجمل وأحنّ قلب في حياتي.</span>
+      </p>
 
-        <!-- Hold to Unlock Heart Scanner -->
-        <div class="scanner-wrap" id="scanner-wrap">
-          <svg class="scanner-ring-svg" viewBox="0 0 136 136">
-            <circle class="scanner-ring-bg" cx="68" cy="68" r="60"></circle>
-            <circle class="scanner-ring-progress" id="scanner-progress" cx="68" cy="68" r="60"></circle>
-          </svg>
-          <button class="heart-hold-btn" id="heart-hold-btn" aria-label="Touch and hold to unlock">
-            <span class="heart-emoji">💖</span>
-          </button>
-        </div>
-
-        <p class="scanner-hint" id="scanner-status-en">Touch & hold the heart to unlock</p>
-        <p class="scanner-hint-ar" id="scanner-status-ar">المسي القلب مطولاً لفتح المفاجأة</p>
+      <div class="scanner-wrap">
+        <svg class="scanner-ring-svg" viewBox="0 0 124 124">
+          <circle class="scanner-ring-bg" cx="62" cy="62" r="54"></circle>
+          <circle class="scanner-ring-progress" cx="62" cy="62" r="54"></circle>
+        </svg>
+        <button class="heart-hold-btn" id="start-celebration-btn" aria-label="Start birthday celebration">
+          <span class="heart-emoji">💖</span>
+        </button>
       </div>
+
+      <p class="scanner-hint">Tap the heart to start music & fireworks</p>
+      <p class="scanner-hint-ar">اضغطي على القلب لتشغيل الموسيقى والألعاب النارية</p>
+
+      <a href="#cake-section" class="scroll-down-indicator" id="scroll-to-cake-link">
+        <span>🎂 Scroll to Your Birthday Cake • اسحبي للكعكة ↓</span>
+      </a>
     </section>
 
-    <!-- ================= SCREEN 2: INTERACTIVE CAKE & CELEBRATION ================= -->
-    <section class="screen" id="screen-celebration">
+    <!-- ================= 2. INTERACTIVE 3D CAKE SECTION ================= -->
+    <section class="cake-section-wrapper" id="cake-section">
       <div class="stage-header">
         <h2 class="stage-title" id="main-bday-title">Make a Birthday Wish, Fouzia!</h2>
         <p class="stage-title-ar" id="main-bday-title-ar">تمنّي أمنية وأطفئي الشموع يا فوزية 🎂</p>
@@ -1107,7 +1113,7 @@
 
       <!-- Dynamic Compliment / Wish Toast for Each Candle -->
       <div class="wish-toast" id="wish-toast">
-        <div class="wish-toast-en" id="wish-toast-en">Tap or swipe the candles — or blow into your mic!</div>
+        <div class="wish-toast-en" id="wish-toast-en">Tap the candles with your finger — or blow into your mic!</div>
         <div class="wish-toast-ar" id="wish-toast-ar">المسي الشموع بإصبعكِ أو انفخي في الميكروفون لإطفائها ✨</div>
       </div>
 
@@ -1203,93 +1209,93 @@
           </button>
         </div>
       </div>
-
-      <!-- ================= EXTRA INTERACTIVE SECTIONS ================= -->
-      <div class="surprise-sections">
-
-        <!-- 1. Wax-Sealed Love Letter Envelope -->
-        <div class="glass-section">
-          <div class="section-tag">Birthday Love Letter</div>
-          <h3 class="section-heading">A Letter For Your Heart</h3>
-          <p class="section-heading-ar">رسالة حب من القلب إلى فوزية 💌</p>
-
-          <div class="envelope-container" id="envelope-container">
-            <div class="envelope-closed" id="envelope-closed">
-              <div class="wax-seal">F</div>
-              <div class="envelope-closed-label">Tap the seal to open your letter</div>
-              <div class="envelope-closed-label-ar">اضغطي على الختم لفتح رسالتكِ</div>
-            </div>
-
-            <div class="letter-paper" id="letter-paper">
-              <div class="letter-greeting">My Dearest Fouzia,</div>
-              <p class="letter-body-en">
-                Happy Birthday to the girl who turns ordinary moments into magic. Every smile of yours feels like sunrise, and having you in my life is the greatest blessing I could ever ask for. May this new year bring you endless joy, peace, and every dream your heart whispers.
-              </p>
-              <div class="letter-divider"></div>
-              <p class="letter-body-ar">
-                حبيبتي الغالية فوزية، كل عام وأنتِ أجمل أقداري ونور أيامي. وجودكِ في حياتي يجعل كل لحظة أدفأ وأجمل. أتمنى لكِ عاماً جديداً يشبه نقاء قلبكِ وجمال روحكِ، مليئاً بالفرح والحب وتحقيق كل أمنياتكِ. أحبكِ دائماً وأبداً ❤️
-              </p>
-              <div class="letter-sign">
-                <span>Forever Yours ♥</span>
-                <span class="ar">أحبكِ يا فوزية</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2. Interactive Reasons Why I Love You Cards -->
-        <div class="glass-section">
-          <div class="section-tag">Tap or Swipe Cards</div>
-          <h3 class="section-heading">Why You Are So Special</h3>
-          <p class="section-heading-ar">أسباب تجعلكِ استثنائية في عيني ✨</p>
-
-          <div class="deck-card" id="reason-card">
-            <div class="deck-emoji" id="reason-emoji">🌹</div>
-            <div class="deck-en" id="reason-en">"Your smile has the power to heal my whole day in a single second."</div>
-            <div class="deck-ar" id="reason-ar">"ابتسامتكِ وحدها قادرة على تلوين يومي بالكامل في لحظة واحدة."</div>
-          </div>
-
-          <div class="deck-controls">
-            <button class="btn btn-secondary" id="prev-reason-btn" style="padding: 9px 16px;">←</button>
-            <div class="deck-dots" id="reason-dots"></div>
-            <button class="btn btn-primary" id="next-reason-btn" style="padding: 9px 16px;">Next • التالي →</button>
-          </div>
-        </div>
-
-        <!-- 3. Scratch-to-Reveal Golden Gift Card -->
-        <div class="glass-section">
-          <div class="section-tag">Touch & Scratch</div>
-          <h3 class="section-heading">Scratch Your Golden Surprise</h3>
-          <p class="section-heading-ar">امسحي البطاقة الذهبية بإصبعكِ 🎁</p>
-
-          <div class="scratch-box" id="scratch-box">
-            <div style="font-size: 1.9rem; margin-bottom: 4px;">🎟️💖</div>
-            <div class="scratch-prize-en">VIP Birthday Date & Endless Hugs!</div>
-            <div class="scratch-prize-ar">قسيمة عشاء رومانسي وألف عناق دافئ لكِ يا فوزية!</div>
-            <canvas id="scratch-canvas"></canvas>
-          </div>
-        </div>
-
-        <!-- 4. Sky Wish Lantern Launcher -->
-        <div class="glass-section">
-          <div class="section-tag">Send a Wish to the Sky</div>
-          <h3 class="section-heading">Release Birthday Lanterns</h3>
-          <p class="section-heading-ar">أطلقي فوانيس الأمنيات في سماء ليلتكِ 🏮</p>
-          <button class="btn btn-gold" id="launch-lantern-btn" style="width: 100%; max-width: 280px;">
-            <span>🏮</span>
-            <span>Launch a Wish Lantern • أطلقي فانوساً</span>
-          </button>
-          <div>
-            <span class="lantern-count-badge" id="lantern-count-badge">Tap anywhere on the screen for floating hearts 💕</span>
-          </div>
-        </div>
-
-      </div>
-
-      <p class="footer-note">
-        Made with all my love for Fouzia ♥ كل عام وأنتِ حبيبتي
-      </p>
     </section>
+
+    <!-- ================= 3. EXTRA INTERACTIVE SECTIONS ================= -->
+    <div class="surprise-sections">
+
+      <!-- Wax-Sealed Love Letter Envelope -->
+      <section class="glass-section">
+        <div class="section-tag">Birthday Love Letter</div>
+        <h3 class="section-heading">A Letter For Your Heart</h3>
+        <p class="section-heading-ar">رسالة حب من القلب إلى فوزية 💌</p>
+
+        <div class="envelope-container" id="envelope-container">
+          <div class="envelope-closed" id="envelope-closed">
+            <div class="wax-seal">F</div>
+            <div class="envelope-closed-label">Tap the seal to open your letter</div>
+            <div class="envelope-closed-label-ar">اضغطي على الختم لفتح رسالتكِ</div>
+          </div>
+
+          <div class="letter-paper" id="letter-paper">
+            <div class="letter-greeting">My Dearest Fouzia,</div>
+            <p class="letter-body-en">
+              Happy Birthday to the girl who turns ordinary moments into magic. Every smile of yours feels like sunrise, and having you in my life is the greatest blessing I could ever ask for. May this new year bring you endless joy, peace, and every dream your heart whispers.
+            </p>
+            <div class="letter-divider"></div>
+            <p class="letter-body-ar">
+              حبيبتي الغالية فوزية، كل عام وأنتِ أجمل أقداري ونور أيامي. وجودكِ في حياتي يجعل كل لحظة أدفأ وأجمل. أتمنى لكِ عاماً جديداً يشبه نقاء قلبكِ وجمال روحكِ، مليئاً بالفرح والحب وتحقيق كل أمنياتكِ. أحبكِ دائماً وأبداً ❤️
+            </p>
+            <div class="letter-sign">
+              <span>Forever Yours ♥</span>
+              <span class="ar">أحبكِ يا فوزية</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Reasons Why I Love You Cards -->
+      <section class="glass-section">
+        <div class="section-tag">Tap Cards</div>
+        <h3 class="section-heading">Why You Are So Special</h3>
+        <p class="section-heading-ar">أسباب تجعلكِ استثنائية في عيني ✨</p>
+
+        <div class="deck-card" id="reason-card">
+          <div class="deck-emoji" id="reason-emoji">🌹</div>
+          <div class="deck-en" id="reason-en">"Your smile has the power to heal my whole day in a single second."</div>
+          <div class="deck-ar" id="reason-ar">"ابتسامتكِ وحدها قادرة على تلوين يومي بالكامل في لحظة واحدة."</div>
+        </div>
+
+        <div class="deck-controls">
+          <button class="btn btn-secondary" id="prev-reason-btn" style="padding: 9px 16px;">←</button>
+          <div class="deck-dots" id="reason-dots"></div>
+          <button class="btn btn-primary" id="next-reason-btn" style="padding: 9px 16px;">Next • التالي →</button>
+        </div>
+      </section>
+
+      <!-- Scratch-to-Reveal Golden Gift Card -->
+      <section class="glass-section">
+        <div class="section-tag">Touch & Scratch</div>
+        <h3 class="section-heading">Scratch Your Golden Surprise</h3>
+        <p class="section-heading-ar">امسحي البطاقة الذهبية بإصبعكِ أو اضغطي عليها 🎁</p>
+
+        <div class="scratch-box" id="scratch-box">
+          <div style="font-size: 1.9rem; margin-bottom: 4px;">🎟️💖</div>
+          <div class="scratch-prize-en">VIP Birthday Date & Endless Hugs!</div>
+          <div class="scratch-prize-ar">قسيمة عشاء رومانسي وألف عناق دافئ لكِ يا فوزية!</div>
+          <canvas id="scratch-canvas"></canvas>
+        </div>
+      </section>
+
+      <!-- Sky Wish Lantern Launcher -->
+      <section class="glass-section">
+        <div class="section-tag">Send a Wish to the Sky</div>
+        <h3 class="section-heading">Release Birthday Lanterns</h3>
+        <p class="section-heading-ar">أطلقي فوانيس الأمنيات في سماء ليلتكِ 🏮</p>
+        <button class="btn btn-gold" id="launch-lantern-btn" style="width: 100%; max-width: 280px;">
+          <span>🏮</span>
+          <span>Launch a Wish Lantern • أطلقي فانوساً</span>
+        </button>
+        <div>
+          <span class="lantern-count-badge" id="lantern-count-badge">Tap anywhere on the screen for floating hearts 💕</span>
+        </div>
+      </section>
+
+    </div>
+
+    <p class="footer-note">
+      Made with all my love for Fouzia ♥ كل عام وأنتِ حبيبتي
+    </p>
 
   </main>
 
@@ -1303,7 +1309,6 @@
         this.isPlayingMelody = false;
         this.melodyTimer = null;
         this.noteIndex = 0;
-        // "Happy Birthday" music-box notes: [freqHz, durationBeats]
         this.melody = [
           [392.00, 0.75], [392.00, 0.25], [440.00, 1.0], [392.00, 1.0], [523.25, 1.0], [493.88, 2.0],
           [392.00, 0.75], [392.00, 0.25], [440.00, 1.0], [392.00, 1.0], [587.33, 1.0], [523.25, 2.0],
@@ -1366,7 +1371,6 @@
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-        // Soft noise puff + chime
         const bufferSize = this.ctx.sampleRate * 0.22;
         const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
         const data = buffer.getChannelData(0);
@@ -1456,7 +1460,7 @@
     const particles = [];
     const lanterns = [];
 
-    function spawnTouchHearts(x, y, count = 7) {
+    function spawnTouchHearts(x, y, count = 6) {
       const colors = ['#ff5d8f', '#ff9ebb', '#ffd166', '#ffffff', '#ff4d6d'];
       for (let i = 0; i < count; i++) {
         const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
@@ -1477,7 +1481,7 @@
 
     function launchFirework(x = W * (0.2 + Math.random() * 0.6), y = H * (0.15 + Math.random() * 0.35)) {
       const colors = ['#ffd166', '#ff5d8f', '#ff9ebb', '#ffffff', '#ffbe0b', '#fb5607'];
-      const count = 38;
+      const count = 36;
       for (let i = 0; i < count; i++) {
         const angle = (Math.PI * 2 * i) / count;
         const speed = Math.random() * 4.5 + 1.5;
@@ -1526,7 +1530,6 @@
     function animateCanvas() {
       ctx.clearRect(0, 0, W, H);
 
-      // Stars
       for (const s of stars) {
         s.phase += s.speed;
         const alpha = 0.25 + 0.65 * Math.abs(Math.sin(s.phase));
@@ -1536,7 +1539,6 @@
         ctx.fill();
       }
 
-      // Sky Lanterns
       for (let i = lanterns.length - 1; i >= 0; i--) {
         const l = lanterns[i];
         l.wobble += 0.025;
@@ -1547,7 +1549,6 @@
         ctx.translate(l.x, l.y);
         ctx.scale(l.scale, l.scale);
 
-        // Warm outer halo
         const grad = ctx.createRadialGradient(0, 0, 4, 0, 0, 38);
         grad.addColorStop(0, 'rgba(255, 209, 102, 0.85)');
         grad.addColorStop(0.5, 'rgba(255, 93, 143, 0.35)');
@@ -1557,7 +1558,6 @@
         ctx.arc(0, 0, 38, 0, Math.PI * 2);
         ctx.fill();
 
-        // Lantern body
         ctx.fillStyle = '#ff9f1c';
         ctx.beginPath();
         if (ctx.roundRect) {
@@ -1567,13 +1567,11 @@
         }
         ctx.fill();
 
-        // Inner flame core
         ctx.fillStyle = '#fff3b0';
         ctx.beginPath();
         ctx.arc(0, 6, 6, 0, Math.PI * 2);
         ctx.fill();
 
-        // Label
         ctx.fillStyle = '#4a0e2e';
         ctx.font = 'bold 9px sans-serif';
         ctx.textAlign = 'center';
@@ -1583,15 +1581,14 @@
         if (l.y < -80) lanterns.splice(i, 1);
       }
 
-      // Hearts & Firework Sparks
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
         if (p.type === 'spark') {
-          p.vy += 0.06; // gravity
+          p.vy += 0.06;
         } else {
-          p.vy -= 0.015; // float up
+          p.vy -= 0.015;
         }
         p.alpha -= p.decay;
 
@@ -1617,96 +1614,21 @@
     }
     animateCanvas();
 
-    // Spawn hearts anywhere the user taps
     window.addEventListener('pointerdown', (e) => {
       spawnTouchHearts(e.clientX, e.clientY, 5);
     });
 
     /**************************************************************
-     * 3. SCREEN 1: TOUCH & HOLD HEART UNLOCK
+     * 3. HERO HEART BUTTON (Music + Fireworks + Smooth Scroll)
      **************************************************************/
-    const holdBtn = document.getElementById('heart-hold-btn');
-    const progressCircle = document.getElementById('scanner-progress');
-    const statusEn = document.getElementById('scanner-status-en');
-    const statusAr = document.getElementById('scanner-status-ar');
-    let holdProgress = 0;
-    let isHolding = false;
-    let unlocked = false;
-    let holdAnimFrame = null;
-
-    function updateScannerRing() {
-      const circumference = 377;
-      const offset = circumference - (holdProgress / 100) * circumference;
-      progressCircle.style.strokeDashoffset = offset;
-    }
-
-    function stepHold() {
-      if (unlocked) return;
-      if (isHolding) {
-        holdProgress = Math.min(100, holdProgress + 2.6);
-        if (Math.random() < 0.35) {
-          const rect = holdBtn.getBoundingClientRect();
-          spawnTouchHearts(rect.left + rect.width / 2, rect.top + rect.height / 2, 2);
-        }
-        if (holdProgress >= 100) {
-          completeUnlock();
-          return;
-        }
-      } else {
-        holdProgress = Math.max(0, holdProgress - 0.8);
-      }
-      updateScannerRing();
-      if (isHolding || holdProgress > 0) {
-        holdAnimFrame = requestAnimationFrame(stepHold);
-      }
-    }
-
-    function startHold(e) {
-      if (unlocked) return;
-      e.preventDefault();
-      sound.init();
-      sound.playChime(523.25 + holdProgress * 2, 0.4, 0.09);
-      holdProgress = Math.min(100, holdProgress + 22);
-      updateScannerRing();
-      if (holdProgress >= 100) {
-        completeUnlock();
-        return;
-      }
-      isHolding = true;
-      holdBtn.classList.add('pressing');
-      statusEn.textContent = 'Keep holding... Magic is happening ✨';
-      statusAr.textContent = 'استمري بالضغط... المفاجأة تفتح الآن 💖';
-      cancelAnimationFrame(holdAnimFrame);
-      holdAnimFrame = requestAnimationFrame(stepHold);
-    }
-
-    function endHold() {
-      if (unlocked) return;
-      isHolding = false;
-      holdBtn.classList.remove('pressing');
-      if (holdProgress < 100) {
-        statusEn.textContent = 'Touch & hold the heart to unlock';
-        statusAr.textContent = 'المسي القلب مطولاً لفتح المفاجأة';
-      }
-    }
-
-    function completeUnlock() {
-      unlocked = true;
-      holdBtn.classList.remove('pressing');
+    document.getElementById('start-celebration-btn').addEventListener('click', () => {
       sound.playSparkleArp();
-      setTimeout(() => sound.startMelody(), 500);
-      launchFirework(W * 0.5, H * 0.3);
-      launchFirework(W * 0.3, H * 0.4);
-      launchFirework(W * 0.7, H * 0.4);
-
-      document.getElementById('screen-unlock').classList.remove('active');
-      document.getElementById('screen-celebration').classList.add('active');
-      initScratchCard();
-    }
-
-    holdBtn.addEventListener('pointerdown', startHold);
-    window.addEventListener('pointerup', endHold);
-    window.addEventListener('pointercancel', endHold);
+      sound.startMelody();
+      launchFirework(W * 0.5, H * 0.25);
+      launchFirework(W * 0.25, H * 0.35);
+      launchFirework(W * 0.75, H * 0.35);
+      document.getElementById('cake-section').scrollIntoView({ behavior: 'smooth' });
+    });
 
     /**************************************************************
      * 4. INTERACTIVE 3D CAKE: TAP, SWIPE, OR BLOW INTO MIC
@@ -1785,7 +1707,6 @@
       sound.playSparkleArp();
       if (!sound.isPlayingMelody) sound.startMelody();
 
-      // Grand Fireworks Celebration
       for (let i = 0; i < 6; i++) {
         setTimeout(() => {
           launchFirework();
@@ -1796,15 +1717,13 @@
       stopMicListening();
     }
 
-    // Tap or swipe across candles
     candleUnits.forEach((unit) => {
-      unit.addEventListener('pointerdown', (e) => {
+      unit.addEventListener('click', (e) => {
         e.stopPropagation();
         extinguishCandle(unit);
       });
     });
 
-    // Allow swiping finger across the candle row on mobile
     const candlesRow = document.getElementById('candles-row');
     candlesRow.addEventListener('pointermove', (e) => {
       const el = document.elementFromPoint(e.clientX, e.clientY);
@@ -1814,7 +1733,6 @@
       }
     });
 
-    // Relight Candles
     relightBtn.addEventListener('click', () => {
       candlesOutCount = 0;
       candleUnits.forEach((u) => u.classList.remove('out'));
@@ -1827,7 +1745,6 @@
       sound.playSparkleArp();
     });
 
-    // Cut the Cake Celebration
     sliceBtn.addEventListener('click', () => {
       const scene = document.getElementById('cake-scene');
       scene.classList.remove('sliced');
@@ -1841,7 +1758,6 @@
       wishToastAr.textContent = '🍰 أحلى قطعة كعك لأحلى وأغلى فوزية في الدنيا!';
     });
 
-    // Microphone Blow Detection
     let micStream = null;
     let micAnalyser = null;
     let micAnimId = null;
@@ -1876,7 +1792,6 @@
         function checkBlowLevel() {
           if (!isMicListening) return;
           micAnalyser.getByteFrequencyData(dataArray);
-          // Focus on low-to-mid frequencies typical of breath/wind on a phone mic
           let sum = 0;
           const bins = 28;
           for (let i = 0; i < bins; i++) {
@@ -1894,7 +1809,6 @@
           }
 
           if (percent > 58) {
-            // Extinguish one lit candle at a time when blowing
             const litCandles = candleUnits.filter((u) => !u.classList.contains('out'));
             if (litCandles.length > 0) {
               const randomLit = litCandles[Math.floor(Math.random() * litCandles.length)];
@@ -1906,7 +1820,6 @@
         }
         checkBlowLevel();
       } catch (err) {
-        // Fallback if mic permission denied or opened on non-HTTPS
         simulateWindBlow();
       }
     }
@@ -1951,7 +1864,7 @@
     });
 
     /**************************************************************
-     * 6. REASONS WHY I LOVE YOU SWIPEABLE / TAPPABLE DECK
+     * 6. REASONS WHY I LOVE YOU CARDS
      **************************************************************/
     const reasons = [
       {
@@ -2031,7 +1944,6 @@
       canvas.height = rect.height || 155;
       const sctx = canvas.getContext('2d');
 
-      // Golden Foil Cover
       const grad = sctx.createLinearGradient(0, 0, canvas.width, canvas.height);
       grad.addColorStop(0, '#d4af37');
       grad.addColorStop(0.5, '#ffe699');
@@ -2039,37 +1951,36 @@
       sctx.fillStyle = grad;
       sctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Sparkle pattern on foil
       sctx.fillStyle = '#4a2c00';
-      sctx.font = 'bold 15px Plus Jakarta Sans, sans-serif';
+      sctx.font = 'bold 14px Plus Jakarta Sans, sans-serif';
       sctx.textAlign = 'center';
-      sctx.fillText('✨ Scratch Here with Your Finger ✨', canvas.width / 2, canvas.height / 2 - 6);
-      sctx.font = 'bold 15px Cairo, sans-serif';
-      sctx.fillText('امسحي هنا بإصبعكِ لكشف الهدية 🎁', canvas.width / 2, canvas.height / 2 + 22);
+      sctx.fillText('✨ Rub or Tap Here to Reveal ✨', canvas.width / 2, canvas.height / 2 - 6);
+      sctx.font = 'bold 14px Cairo, sans-serif';
+      sctx.fillText('امسحي أو اضغطي هنا لكشف الهدية 🎁', canvas.width / 2, canvas.height / 2 + 20);
 
       let isDrawing = false;
 
-      function scratchAt(clientX, clientY) {
+      function scratchAt(clientX, clientY, radius = 28) {
         const r = canvas.getBoundingClientRect();
         const x = clientX - r.left;
         const y = clientY - r.top;
         sctx.globalCompositeOperation = 'destination-out';
         sctx.beginPath();
-        sctx.arc(x, y, 24, 0, Math.PI * 2);
+        sctx.arc(x, y, radius, 0, Math.PI * 2);
         sctx.fill();
 
-        if (!scratchCompleted && Math.random() < 0.25) {
+        if (!scratchCompleted && Math.random() < 0.35) {
           checkScratchProgress(canvas, sctx);
         }
       }
 
       canvas.addEventListener('pointerdown', (e) => {
         isDrawing = true;
-        scratchAt(e.clientX, e.clientY);
+        scratchAt(e.clientX, e.clientY, 36);
       });
       canvas.addEventListener('pointermove', (e) => {
         if (!isDrawing) return;
-        scratchAt(e.clientX, e.clientY);
+        scratchAt(e.clientX, e.clientY, 28);
       });
       window.addEventListener('pointerup', () => {
         isDrawing = false;
@@ -2084,7 +1995,7 @@
         if (imgData[i] < 128) clearPixels++;
       }
       const ratio = clearPixels / (totalPixels / 4);
-      if (ratio > 0.42 && !scratchCompleted) {
+      if (ratio > 0.35 && !scratchCompleted) {
         scratchCompleted = true;
         canvas.style.opacity = '0';
         setTimeout(() => (canvas.style.display = 'none'), 500);
@@ -2092,6 +2003,8 @@
         launchFirework(W * 0.5, H * 0.5);
       }
     }
+
+    window.addEventListener('load', initScratchCard);
 
     /**************************************************************
      * 8. SKY WISH LANTERN BUTTON
